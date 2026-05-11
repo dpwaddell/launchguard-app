@@ -315,3 +315,55 @@ select {
 [role="tab"] {
   border-radius: 12px !important;
 }
+
+/* LaunchGuard UX polish v3 - safe CSS only */
+.Polaris-Tabs {
+  margin-bottom: 18px;
+}
+
+.Polaris-Tabs__Tab {
+  font-weight: 700;
+}
+
+.Polaris-EmptyState {
+  background:
+    radial-gradient(circle at top left, rgba(238,70,102,.10), transparent 22rem),
+    linear-gradient(180deg, #fff, #fbfbfa);
+  border-radius: 24px !important;
+}
+
+.Polaris-Badge {
+  letter-spacing: -0.01em;
+}
+
+.Polaris-TextField__Input:focus,
+.Polaris-Select__Input:focus,
+textarea:focus,
+input:focus,
+select:focus {
+  box-shadow: 0 0 0 3px rgba(238,70,102,.14) !important;
+  border-color: rgba(238,70,102,.45) !important;
+}
+
+.Polaris-Layout__Section {
+  animation: lgFadeIn .18s ease-out;
+}
+
+@keyframes lgFadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.Polaris-Card h2,
+.Polaris-Card h3 {
+  letter-spacing: -0.025em;
+}
+
+.Polaris-Card p {
+  line-height: 1.55;
+}
+
+.Polaris-CalloutCard,
+.Polaris-Banner {
+  border-radius: 18px !important;
+}
