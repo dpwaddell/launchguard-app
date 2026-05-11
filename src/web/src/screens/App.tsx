@@ -23,9 +23,9 @@ import launchGuardLogo from "../assets/launchguard-logo.svg";
 import { adminFetch } from "../lib/adminFetch";
 
 const tabs = [
-  { id: "dashboard", content: "Dashboard" },
+  { id: "dashboard", content: "Control centre" },
   { id: "campaigns", content: "Campaigns" },
-  { id: "new-campaign", content: "New campaign" },
+  { id: "new-campaign", content: "Create launch" },
   { id: "plans", content: "Plans" },
   { id: "settings", content: "Settings" },
   { id: "support", content: "Support" },
@@ -185,7 +185,7 @@ export function App() {
                   <Text as="p" tone="subdued">Schedule launches, control access, enforce fair limits.</Text>
                 </BlockStack>
               </InlineStack>
-              <Button variant="primary" onClick={() => { clearEdit(); setSelected(2); }}>New campaign</Button>
+              <Button variant="primary" onClick={() => { clearEdit(); setSelected(2); }}>Create launch</Button>
             </div>
             <div className="lg-tabs">
               <Tabs tabs={tabs} selected={selected} onSelect={(idx) => { if (idx !== 2) clearEdit(); setSelected(idx); }}>
@@ -254,7 +254,7 @@ function DashboardPanel({ data, loading, goToTab, runAction }: { data: Bootstrap
             <Text as="h2" variant="headingMd">Get started</Text>
           </InlineStack>
           <InlineGrid columns={{ xs: 1, md: 3 }} gap="300">
-            <Button onClick={() => goToTab(2)}>Create your first launch campaign</Button>
+            <Button onClick={() => goToTab(2)}>Create your first controlled launch</Button>
             <Button onClick={() => goToTab(5)}>Need help with a launch?</Button>
             <Button onClick={() => goToTab(3)}>View plans</Button>
           </InlineGrid>
@@ -332,7 +332,7 @@ function CampaignsPanel({ data, loading, runAction, onEdit, onNew }: { data: Boo
     <BlockStack gap="400">
       <SectionHeader title="Campaigns" description="All launch campaigns for this store." />
       <InlineStack align="end">
-        <Button variant="primary" onClick={onNew}>New campaign</Button>
+        <Button variant="primary" onClick={onNew}>Create launch</Button>
       </InlineStack>
       {campaigns.map((campaign) => (
         <Card key={campaign.id}>
@@ -563,7 +563,7 @@ function CampaignEditorPanel({ data, loading, runAction, editingCampaign, onSave
       <Card>
         <div className="lg-form-card">
           <BlockStack gap="400">
-            <Text as="h2" variant="headingMd">1. Select products</Text>
+            <Text as="h2" variant="headingMd">1. Choose launch product</Text>
             {pickerError ? <Banner tone="warning"><Text as="p">{pickerError}</Text></Banner> : null}
             {form.products.map((product) => (
               <InlineStack key={product.shopifyProductId} align="space-between" blockAlign="center" gap="200">
@@ -582,7 +582,7 @@ function CampaignEditorPanel({ data, loading, runAction, editingCampaign, onSave
                 </InlineStack>
               </Banner>
             ) : (
-              <Button onClick={pickProduct}>Add product</Button>
+              <Button onClick={pickProduct}>Choose product</Button>
             )}
           </BlockStack>
         </div>
@@ -598,7 +598,7 @@ function CampaignEditorPanel({ data, loading, runAction, editingCampaign, onSave
               <TextField label="Public launch date & time (local)" type="datetime-local" value={form.publicLaunchAt} onChange={v => update("publicLaunchAt", v)} autoComplete="off" />
               <Select label="Timezone" options={timezoneOptions} value={form.timezone} onChange={v => update("timezone", v)} helpText="Used for launch timing." />
               <TextField label="VIP early access start (optional)" type="datetime-local" value={form.vipAccessStartsAt} onChange={v => update("vipAccessStartsAt", v)} autoComplete="off" helpText="Leave blank for no VIP window." disabled={!entitlements?.vipAccess} />
-              {!entitlements?.vipAccess && <Text as="p" tone="subdued">VIP early access is available on Starter and higher. <Button variant="plain" onClick={onUpgrade}>Upgrade</Button></Text>}
+              {!entitlements?.vipAccess && <Text as="p" tone="subdued">VIP early access is available on Starter and higher. Use it for private customer drops and early-access launches. <Button variant="plain" onClick={onUpgrade}>Upgrade</Button></Text>}
               <TextField label="Campaign end date & time (optional)" type="datetime-local" value={form.endsAt} onChange={v => update("endsAt", v)} autoComplete="off" helpText="Leave blank to run indefinitely." />
             </FormLayout>
           </BlockStack>

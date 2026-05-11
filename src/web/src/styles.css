@@ -258,3 +258,60 @@
 .lg-section-header {
   padding: 0.25rem 0 0.75rem;
 }
+
+/* LaunchGuard UI polish v2 */
+:root {
+  --lg-border: rgba(23, 23, 33, 0.10);
+  --lg-card-shadow: 0 10px 28px rgba(23, 23, 33, 0.07);
+  --lg-card-shadow-hover: 0 16px 38px rgba(23, 23, 33, 0.10);
+}
+
+body {
+  background:
+    radial-gradient(circle at 0% 0%, rgba(238, 70, 102, 0.13), transparent 28rem),
+    radial-gradient(circle at 100% 0%, rgba(18, 23, 44, 0.08), transparent 30rem),
+    #f7f6f4 !important;
+}
+
+.lg-app {
+  max-width: 1220px;
+  padding: 34px 34px 56px;
+}
+
+.Polaris-Card {
+  border-radius: 20px !important;
+  border: 1px solid var(--lg-border) !important;
+  box-shadow: var(--lg-card-shadow);
+  transition: box-shadow .16s ease, transform .16s ease;
+}
+
+.Polaris-Card:hover {
+  box-shadow: var(--lg-card-shadow-hover);
+  transform: translateY(-1px);
+}
+
+.Polaris-Button,
+button {
+  border-radius: 12px !important;
+  font-weight: 700 !important;
+}
+
+.Polaris-TextField__Input,
+.Polaris-Select__Input,
+input,
+textarea,
+select {
+  border-radius: 12px !important;
+}
+
+[role="tablist"] {
+  background: rgba(255,255,255,0.78);
+  border: 1px solid var(--lg-border);
+  border-radius: 18px;
+  padding: 7px;
+  box-shadow: 0 8px 22px rgba(23,23,33,0.06);
+}
+
+[role="tab"] {
+  border-radius: 12px !important;
+}
