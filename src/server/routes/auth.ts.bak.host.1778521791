@@ -62,7 +62,5 @@ authRouter.get("/auth/callback", async (req, res) => {
   });
 
   logger.info({ shop: session.shop, webhooks: registeredWebhookTopics }, "shop installed");
-  const host = typeof req.query.host === "string" ? req.query.host : "";
-    const hostParam = host ? `&host=${encodeURIComponent(host)}` : "";
-    res.redirect(`/app?shop=${encodeURIComponent(session.shop)}${hostParam}`);
+  res.redirect(`/app?shop=${encodeURIComponent(session.shop)}`);
 });

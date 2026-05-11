@@ -1,6 +1,9 @@
 services:
   app:
-    build: .
+    build:
+      context: .
+      args:
+        VITE_SHOPIFY_API_KEY: ${SHOPIFY_API_KEY}
     env_file:
       - path: .env
         required: false
