@@ -1,4 +1,4 @@
-client_id = ""
+client_id = "e17e2b362d9d51d265bb78fb7032fb60"
 name = "LaunchGuard"
 application_url = "https://launchguard.sample-guard.com"
 embedded = true
@@ -8,14 +8,6 @@ automatically_update_urls_on_dev = false
 
 [webhooks]
 api_version = "2026-04"
-
-  [[webhooks.subscriptions]]
-  topics = [ "app/uninstalled" ]
-  uri = "https://launchguard.sample-guard.com/webhooks/app/uninstalled"
-
-  [[webhooks.subscriptions]]
-  compliance_topics = [ "customers/data_request", "customers/redact", "shop/redact" ]
-  uri = "/webhooks/compliance"
 
 [access_scopes]
 scopes = "read_products,write_products,read_customers,read_orders"
@@ -29,3 +21,6 @@ redirect_urls = [
 url = "https://launchguard.sample-guard.com/apps/launchguard"
 subpath = "launchguard"
 prefix = "apps"
+
+[pos]
+embedded = false
