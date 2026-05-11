@@ -75,6 +75,19 @@ type Plan = {
   current?: boolean;
 };
 
+const timezoneOptions = [
+  { label: "Europe/London", value: "Europe/London" },
+  { label: "UTC", value: "UTC" },
+  { label: "America/New_York", value: "America/New_York" },
+  { label: "America/Chicago", value: "America/Chicago" },
+  { label: "America/Denver", value: "America/Denver" },
+  { label: "America/Los_Angeles", value: "America/Los_Angeles" },
+  { label: "Europe/Paris", value: "Europe/Paris" },
+  { label: "Europe/Berlin", value: "Europe/Berlin" },
+  { label: "Asia/Dubai", value: "Asia/Dubai" },
+  { label: "Australia/Sydney", value: "Australia/Sydney" }
+];
+
 type Bootstrap = {
   shop: null | {
     domain: string;
@@ -583,7 +596,7 @@ function CampaignEditorPanel({ data, loading, runAction, editingCampaign, onSave
             <FormLayout>
               <TextField label="Campaign name" value={form.name} onChange={v => update("name", v)} autoComplete="off" placeholder="Summer Drop 2026" />
               <TextField label="Public launch date & time (local)" type="datetime-local" value={form.publicLaunchAt} onChange={v => update("publicLaunchAt", v)} autoComplete="off" />
-              <TextField label="Timezone" value={form.timezone} onChange={v => update("timezone", v)} autoComplete="off" helpText="E.g. Europe/London, America/New_York, UTC" />
+              <Select label="Timezone" options={timezoneOptions} value={form.timezone} onChange={v => update("timezone", v)} helpText="Used for launch timing." />
               <TextField label="VIP early access start (optional)" type="datetime-local" value={form.vipAccessStartsAt} onChange={v => update("vipAccessStartsAt", v)} autoComplete="off" helpText="Leave blank for no VIP window." disabled={!entitlements?.vipAccess} />
               {!entitlements?.vipAccess && <Text as="p" tone="subdued">VIP early access is available on Starter and higher. <Button variant="plain" onClick={onUpgrade}>Upgrade</Button></Text>}
               <TextField label="Campaign end date & time (optional)" type="datetime-local" value={form.endsAt} onChange={v => update("endsAt", v)} autoComplete="off" helpText="Leave blank to run indefinitely." />
@@ -785,7 +798,7 @@ function SettingsPanel({ data, loading, runAction }: { data: Bootstrap["shop"]; 
           <BlockStack gap="400">
             <Text as="h2" variant="headingMd">Store settings</Text>
             <FormLayout>
-              <TextField label="Default timezone" value={timezone} onChange={setTimezone} autoComplete="off" helpText="Used as the default when creating new campaigns. E.g. Europe/London, America/New_York" />
+              <Select label="Default timezone" options={timezoneOptions} value={timezone} onChange={setTimezone} helpText="Used as the default when creating new campaigns." />
               <Button variant="primary" loading={loading} onClick={() => runAction(saveSettings, "Settings saved.")}>Save settings</Button>
             </FormLayout>
           </BlockStack>
