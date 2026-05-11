@@ -74,7 +74,7 @@ app.use(
 app.use(healthRouter);
 app.use(authRouter);
 app.use(storefrontRouter);
-app.use(express.static(path.resolve(__dirname, "web"), { index: false }));
+app.use(express.static(path.resolve(__dirname, "../web"), { index: false }));
 app.use(adminRouter);
 
 app.use((_req, res) => {
