@@ -1,0 +1,24 @@
+{% if block.settings.enabled %}
+<script>
+  window.__launchguardAppUrl = {{ shop.url | json }};
+  window.__launchguardShop = {{ shop.permanent_domain | json }};
+  window.__launchguardCustomerTags = {{ customer.tags | json | default: '[]' }};
+  window.__launchguardLoggedIn = {{ customer != blank | json }};
+</script>
+<script src="{{ 'launchguard.js' | asset_url }}" defer></script>
+{% endif %}
+
+{% schema %}
+{
+  "name": "LaunchGuard",
+  "target": "body",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enabled",
+      "label": "Enable LaunchGuard",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

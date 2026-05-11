@@ -1,0 +1,252 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum PlanName {
+  FREE
+  STARTER
+  GROWTH
+  SCALE
+}
+
+enum CampaignStatus {
+  DRAFT
+  SCHEDULED
+  VIP_ACTIVE
+  LIVE
+  ENDED
+  DISABLED
+}
+
+enum LimitType {
+  PER_ORDER
+  PER_CUSTOMER
+}
+
+enum AuditSeverity {
+  INFO
+  WARN
+  ERROR
+}
+
+enum SupportIssueType {
+  SETUP_HELP
+  LAUNCH_NOT_WORKING
+  VIP_ACCESS
+  PURCHASE_LIMITS
+  STOREFRONT_DISPLAY
+  BILLING_PLAN
+  OTHER
+}
+
+enum FeatureCategory {
+  LAUNCH_SCHEDULING
+  VIP_ACCESS
+  PURCHASE_LIMITS
+  STOREFRONT_DISPLAY
+  ANALYTICS
+  INTEGRATIONS
+  OTHER
+}
+
+enum FeatureImportance {
+  NICE_TO_HAVE
+  IMPORTANT
+  NEEDED_FOR_NEXT_LAUNCH
+}
+
+model Shop {
+  id                          String    @id @default(cuid())
+  shopDomain                  String    @unique
+  accessToken                 String
+  offlineAccessTokenExpiresAt DateTime?
+  offlineRefreshToken         String?
+  offlineRefreshTokenExpiresAt DateTime?
+  scope                       String
+  planName                    PlanName  @default(FREE)
+  billingPlanName             PlanName?
+  billingSubscriptionId       String?
+  billingStatus               String    @default("NONE")
+  billingConfirmationUrl      String?
+  billingCurrentPeriodEnd     DateTime?
+  billingTest                 Boolean   @default(false)
+  billingLastVerifiedAt       DateTime?
+  installedAt                 DateTime  @default(now())
+  uninstalledAt               DateTime?
+  createdAt                   DateTime  @default(now())
+  updatedAt                   DateTime  @updatedAt
+
+  sessions         Session[]
+  settings         ShopSettings?
+  campaigns        LaunchCampaign[]
+  supportRequests  SupportRequest[]
+  featureRequests  FeatureRequest[]
+  auditLogs        AuditLog[]
+
+  @@index([shopDomain])
+}
+
+model Session {
+  id          String    @id
+  shopId      String
+  shopDomain  String
+  state       String?
+  isOnline    Boolean   @default(false)
+  accessToken String?
+  scope       String?
+  expiresAt   DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  shop Shop @relation(fields: [shopId], references: [id], onDelete: Cascade)
+
+  @@index([shopDomain])
+  @@index([shopId])
+}
+
+model ShopSettings {
+  id                   String   @id @default(cuid())
+  shopId               String   @unique
+  brandingEnabled      Boolean  @default(true)
+  defaultTimezone      String   @default("UTC")
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+
+  shop Shop @relation(fields: [shopId], references: [id], onDelete: Cascade)
+}
+
+model LaunchCampaign {
+  id                    String         @id @default(cuid())
+  shopId                String
+  name                  String
+  status                CampaignStatus @default(DRAFT)
+  isEnabled             Boolean        @default(true)
+  timezone              String         @default("UTC")
+  publicLaunchAt        DateTime
+  vipAccessStartsAt     DateTime?
+  endsAt                DateTime?
+  seoSuppressionEnabled Boolean        @default(false)
+  countdownTitle        String         @default("Coming soon")
+  countdownBody         String         @default("This product will be available soon.")
+  lockedMessage         String         @default("This product is not yet available.")
+  vipMessage            String         @default("You have early access. Enjoy the launch!")
+  brandingEnabled       Boolean        @default(true)
+  schedulerLastRunAt    DateTime?
+  schedulerError        String?
+  createdAt             DateTime       @default(now())
+  updatedAt             DateTime       @updatedAt
+
+  shop           Shop                    @relation(fields: [shopId], references: [id], onDelete: Cascade)
+  products       LaunchCampaignProduct[]
+  accessRules    LaunchAccessRule[]
+  purchaseLimits LaunchPurchaseLimit[]
+
+  @@index([shopId, status])
+  @@index([shopId, publicLaunchAt])
+  @@index([status, publicLaunchAt])
+  @@index([status, vipAccessStartsAt])
+  @@index([status, endsAt])
+}
+
+model LaunchCampaignProduct {
+  id                       String   @id @default(cuid())
+  campaignId               String
+  shopifyProductId         String
+  shopifyProductHandle     String
+  shopifyProductTitle      String   @default("")
+  originalPublicationState Json?
+  originalSeoState         Json?
+  createdAt                DateTime @default(now())
+
+  campaign LaunchCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  @@unique([campaignId, shopifyProductId])
+  @@index([campaignId])
+}
+
+model LaunchAccessRule {
+  id         String   @id @default(cuid())
+  campaignId String
+  customerTag String
+  createdAt  DateTime @default(now())
+
+  campaign LaunchCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  @@unique([campaignId, customerTag])
+  @@index([campaignId])
+}
+
+model LaunchPurchaseLimit {
+  id                String    @id @default(cuid())
+  campaignId        String
+  limitType         LimitType
+  maxQuantity       Int
+  enabled           Boolean   @default(true)
+  validationMessage String    @default("This launch is limited to {max} per order.")
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  campaign LaunchCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+
+  @@unique([campaignId, limitType])
+  @@index([campaignId])
+}
+
+model SupportRequest {
+  id          String           @id @default(cuid())
+  shopId      String
+  campaignId  String?
+  issueType   SupportIssueType
+  subject     String
+  message     String
+  contactEmail String
+  planName    String
+  diagnostics Json?
+  status      String           @default("OPEN")
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  shop Shop @relation(fields: [shopId], references: [id], onDelete: Cascade)
+
+  @@index([shopId, createdAt])
+}
+
+model FeatureRequest {
+  id          String            @id @default(cuid())
+  shopId      String
+  title       String
+  description String
+  category    FeatureCategory
+  importance  FeatureImportance
+  planName    String
+  diagnostics Json?
+  status      String            @default("OPEN")
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  shop Shop @relation(fields: [shopId], references: [id], onDelete: Cascade)
+
+  @@index([shopId, createdAt])
+}
+
+model AuditLog {
+  id         String        @id @default(cuid())
+  shopId     String
+  campaignId String?
+  action     String
+  severity   AuditSeverity @default(INFO)
+  message    String
+  metadata   Json?
+  createdAt  DateTime      @default(now())
+
+  shop Shop @relation(fields: [shopId], references: [id], onDelete: Cascade)
+
+  @@index([shopId, createdAt])
+  @@index([shopId, campaignId, createdAt])
+  @@index([severity, createdAt])
+}

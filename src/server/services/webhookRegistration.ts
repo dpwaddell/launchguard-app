@@ -1,0 +1,66 @@
+import type { Shop } from "@prisma/client";
+import { env } from "../config/env.js";
+import { logger } from "../lib/logger.js";
+
+type WebhookTopic = "app/uninstalled" | "customers/data_request" | "customers/redact" | "shop/redact";
+
+type ShopifyWebhook = { id: number; topic: string; address: string };
+type WebhookListResponse = { webhooks?: ShopifyWebhook[]; errors?: unknown };
+type WebhookCreateResponse = { webhook?: ShopifyWebhook; errors?: unknown };
+
+export const REQUIRED_WEBHOOK_TOPICS: WebhookTopic[] = [
+  "app/uninstalled",
+  "customers/data_request",
+  "customers/redact",
+  "shop/redact"
+];
+
+export function webhookAddress(topic: WebhookTopic) {
+  return `${env.APP_URL.replace(/\/$/, "")}/webhooks/${topic}`;
+}
+
+export async function registerRequiredWebhooks(shop: Pick<Shop, "shopDomain" | "accessToken">) {
+  const existingWebhooks = await listWebhooks(shop);
+  const registeredTopics: WebhookTopic[] = [];
+
+  for (const topic of REQUIRED_WEBHOOK_TOPICS) {
+    const address = webhookAddress(topic);
+    const existing = existingWebhooks.find((w) => w.topic === topic && w.address === address);
+    if (existing) {
+      registeredTopics.push(topic);
+      continue;
+    }
+    await createWebhook(shop, topic, address);
+    registeredTopics.push(topic);
+  }
+
+  logger.info({ shop: shop.shopDomain, topics: registeredTopics }, "required shopify webhooks registered");
+  return registeredTopics;
+}
+
+async function listWebhooks(shop: Pick<Shop, "shopDomain" | "accessToken">) {
+  const response = await fetch(`https://${shop.shopDomain}/admin/api/2026-04/webhooks.json?limit=250`, {
+    headers: { Accept: "application/json", "X-Shopify-Access-Token": shop.accessToken }
+  });
+  const body = (await response.json()) as WebhookListResponse;
+  if (!response.ok) {
+    logger.warn({ shop: shop.shopDomain, status: response.status }, "shopify webhook list failed");
+    throw Object.assign(new Error("Shopify webhook list failed"), { statusCode: 502 });
+  }
+  return body.webhooks ?? [];
+}
+
+async function createWebhook(shop: Pick<Shop, "shopDomain" | "accessToken">, topic: WebhookTopic, address: string) {
+  const response = await fetch(`https://${shop.shopDomain}/admin/api/2026-04/webhooks.json`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Accept: "application/json", "X-Shopify-Access-Token": shop.accessToken },
+    body: JSON.stringify({ webhook: { topic, address, format: "json" } })
+  });
+  const body = (await response.json()) as WebhookCreateResponse;
+  if (!response.ok || !body.webhook) {
+    logger.warn({ shop: shop.shopDomain, topic, status: response.status }, "shopify webhook registration failed");
+    throw Object.assign(new Error(`Shopify webhook registration failed for ${topic}`), { statusCode: 502 });
+  }
+  logger.info({ shop: shop.shopDomain, topic, address }, "shopify webhook registered");
+  return body.webhook;
+}

@@ -1,0 +1,12 @@
+api_version = "2026-04"
+
+[[extensions]]
+type = "theme"
+name = "LaunchGuard - Countdown & Lock"
+handle = "launchguard-embed"
+
+[extensions.settings]
+  [[extensions.settings.fields]]
+  key = "enabled"
+  type = "boolean"
+  name = "Enable LaunchGuard storefront controls"

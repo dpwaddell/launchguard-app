@@ -1,0 +1,260 @@
+/* LaunchGuard admin styles */
+
+.lg-app {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.lg-admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 0 1rem;
+  border-bottom: 1px solid var(--p-color-border);
+  margin-bottom: 1.25rem;
+}
+
+.lg-admin-header__logo {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+}
+
+.lg-tabs {
+  margin-top: 0;
+}
+
+/* Hero */
+.lg-hero {
+  background: linear-gradient(135deg, #1A1A2E 0%, #16213E 100%);
+  border-radius: 12px;
+  padding: 2rem;
+  color: white;
+}
+
+.lg-hero__content {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+}
+
+.lg-hero__logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.lg-hero .Polaris-Text--root {
+  color: white;
+}
+
+/* Status badge pill */
+.lg-status-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.lg-status-draft { background: #f4f4f4; color: #555; }
+.lg-status-scheduled { background: #e3f2fd; color: #1565c0; }
+.lg-status-vip_active { background: #fce4ec; color: #c62828; }
+.lg-status-live { background: #e8f5e9; color: #1b5e20; }
+.lg-status-ended { background: #f4f4f4; color: #777; }
+.lg-status-disabled { background: #fafafa; color: #bbb; }
+
+/* Metric cards */
+.lg-metric-card {
+  padding: 0.5rem 0;
+}
+
+/* Campaign list item */
+.lg-campaign-card {
+  padding: 0.25rem 0;
+}
+
+/* Form card */
+.lg-form-card {
+  padding: 0.5rem 0;
+}
+
+.lg-form-section {
+  padding: 1rem;
+  background: #fafafa;
+  border-radius: 8px;
+  border: 1px solid var(--p-color-border);
+}
+
+/* Section card */
+.lg-section-card {
+  padding: 0.5rem 0;
+}
+
+/* Plan cards */
+.lg-plan-card { padding: 0.5rem; }
+.lg-plan-card-current { box-shadow: 0 0 0 2px #E94560 inset; border-radius: 12px; }
+.lg-plan-card-growth { position: relative; }
+
+.lg-plan-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
+}
+
+.lg-plan-price {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1A1A2E;
+}
+
+.lg-plan-price-interval {
+  font-size: 0.875rem;
+  color: #777;
+}
+
+.lg-trial-pill {
+  display: inline-block;
+  background: #E94560;
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.15rem 0.5rem;
+  border-radius: 20px;
+  letter-spacing: 0.02em;
+}
+
+.lg-plan-card__body {
+  border-top: 1px solid var(--p-color-border);
+  padding-top: 1rem;
+  margin-top: 0.5rem;
+}
+
+.lg-feature-list {
+  list-style: none;
+  padding: 0;
+  margin: 0.75rem 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.lg-feature-list li::before {
+  content: "✓ ";
+  color: #E94560;
+  font-weight: 600;
+}
+
+.lg-plans-footer {
+  text-align: center;
+  padding: 0.75rem 0;
+}
+
+/* Activity */
+.lg-activity-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 0.5rem 0;
+}
+
+.lg-activity-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--p-color-border);
+}
+
+.lg-activity-item:last-child {
+  border-bottom: none;
+}
+
+.lg-activity-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #E94560;
+  margin-top: 0.35rem;
+  flex-shrink: 0;
+}
+
+/* Empty state */
+.lg-empty-card {
+  padding: 2rem;
+}
+
+/* Pill tags */
+.lg-pill {
+  display: inline-block;
+  background: #f0f0f0;
+  color: #333;
+  font-size: 0.75rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+}
+
+/* Upgrade card */
+.lg-upgrade-card {
+  padding: 0.5rem;
+}
+
+/* Step wizard */
+.lg-wizard-step {
+  border: 1px solid var(--p-color-border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.lg-wizard-step-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  background: #f9f9f9;
+  cursor: pointer;
+}
+
+.lg-wizard-step-body {
+  padding: 1.25rem;
+  border-top: 1px solid var(--p-color-border);
+}
+
+.lg-wizard-step-marker {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #1A1A2E;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.lg-wizard-step-marker.complete {
+  background: #1b5e20;
+}
+
+/* Support page */
+.lg-support-hero {
+  background: linear-gradient(135deg, #1A1A2E 0%, #2d2d44 100%);
+  border-radius: 12px;
+  padding: 1.5rem 2rem;
+  color: white;
+}
+
+.lg-support-hero .Polaris-Text--root {
+  color: white;
+}
+
+/* Section header */
+.lg-section-header {
+  padding: 0.25rem 0 0.75rem;
+}

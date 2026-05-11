@@ -1,0 +1,17 @@
+api_version = "2026-04"
+
+[[extensions]]
+type = "function"
+name = "LaunchGuard Purchase Limit Validator"
+handle = "launchguard-checkout-validation"
+description = "Validates cart quantities against active LaunchGuard campaign limits."
+
+[extensions.build]
+command = "npm run build"
+path = "dist/index.wasm"
+
+[extensions.input.variables]
+  [[extensions.input.variables.variables]]
+  name = "campaignLimitsMetafieldKey"
+  type = "String!"
+  default_value = "launchguard_limits"
