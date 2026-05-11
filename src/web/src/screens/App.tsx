@@ -29,7 +29,7 @@ const tabs = [
   { id: "plans", content: "Plans" },
   { id: "settings", content: "Settings" },
   { id: "support", content: "Support" },
-  { id: "activity", content: "Activity" }
+  { id: "activity", content: "Audit trail" }
 ];
 
 type Campaign = {
@@ -258,6 +258,21 @@ function DashboardPanel({ data, loading, goToTab, runAction }: { data: Bootstrap
             <Button onClick={() => goToTab(5)}>Need help with a launch?</Button>
             <Button onClick={() => goToTab(3)}>View plans</Button>
           </InlineGrid>
+        </BlockStack>
+      </Card>
+
+      <Card>
+        <BlockStack gap="400">
+          <Text as="h2" variant="headingMd">Launch templates</Text>
+          <Text as="p" tone="subdued">Start from a common launch setup, then adjust timing, VIP tags and limits.</Text>
+          <LaunchTemplateCards onNew={() => goToTab(2)} />
+        </BlockStack>
+      </Card>
+
+      <Card>
+        <BlockStack gap="400">
+          <Text as="h2" variant="headingMd">How LaunchGuard protects a launch</Text>
+          <FeatureEducationStrip />
         </BlockStack>
       </Card>
 
@@ -676,6 +691,7 @@ function CampaignEditorPanel({ data, loading, runAction, editingCampaign, onSave
         <div className="lg-form-card">
           <BlockStack gap="400">
             <Text as="h2" variant="headingMd">5. Storefront message</Text>
+              <StorefrontPreviewCard />
             <FormLayout>
               <TextField label="Countdown title" value={form.countdownTitle} onChange={v => update("countdownTitle", v)} autoComplete="off" />
               <TextField label="Countdown body" value={form.countdownBody} onChange={v => update("countdownBody", v)} multiline={2} autoComplete="off" />
@@ -1029,6 +1045,53 @@ function planFeatures(plan: Plan) {
     SCALE: ["Everything in Growth", "Shopify Flow (coming)", "Advanced analytics", "Priority support"]
   };
   return features[plan.key] ?? plan.features.slice(0, 5);
+}
+
+function LaunchTemplateCards({ onNew }: { onNew: () => void }) {
+  const templates = [
+    { title: "Product drop", body: "Schedule a product to unlock at a specific time with a countdown." },
+    { title: "VIP early access", body: "Let tagged customers shop before the public launch window." },
+    { title: "Fair-limit launch", body: "Use purchase limits to reduce bulk buying during high-demand drops." }
+  ];
+
+  return (
+    <div className="lg-template-grid">
+      {templates.map((template) => (
+        <div className="lg-template-card" key={template.title}>
+          <div>
+            <p className="lg-template-eyebrow">Launch template</p>
+            <h3>{template.title}</h3>
+            <p>{template.body}</p>
+          </div>
+          <Button size="slim" onClick={onNew}>Use template</Button>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function FeatureEducationStrip() {
+  return (
+    <div className="lg-feature-strip">
+      <div><strong>VIP access</strong><span>Give tagged customers a private early-access window.</span></div>
+      <div><strong>Fair purchase limits</strong><span>Help prevent bulk buying and keep launches fair.</span></div>
+      <div><strong>SEO-safe launch control</strong><span>Keep launch products controlled without confusing shoppers.</span></div>
+    </div>
+  );
+}
+
+function StorefrontPreviewCard() {
+  return (
+    <div className="lg-preview-card">
+      <div className="lg-preview-topline"><span>Storefront preview</span><span>Countdown / locked / VIP</span></div>
+      <div className="lg-preview-box">
+        <p className="lg-preview-kicker">Launching soon</p>
+        <h3>Product available soon</h3>
+        <p>This product is not yet available. VIP customers may access early when configured.</p>
+        <div className="lg-countdown-row"><span>02d</span><span>14h</span><span>38m</span></div>
+      </div>
+    </div>
+  );
 }
 
 function firstPickerSelection(result: Array<{ id: string; title?: string; handle?: string }> | { selection?: Array<{ id: string; title?: string; handle?: string }> } | undefined) {
