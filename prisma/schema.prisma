@@ -63,6 +63,10 @@ enum FeatureImportance {
 model Shop {
   id                          String    @id @default(cuid())
   shopDomain                  String    @unique
+  merchantEmail               String?
+  merchantContactEmail        String?
+  shopOwnerName               String?
+  merchantDetailsCapturedAt   DateTime?
   accessToken                 String
   offlineAccessTokenExpiresAt DateTime?
   offlineRefreshToken         String?
