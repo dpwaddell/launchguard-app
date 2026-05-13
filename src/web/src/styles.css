@@ -436,3 +436,72 @@ body {
   .lg-template-grid, .lg-feature-strip { grid-template-columns: 1fr; }
   .lg-admin-header { grid-template-columns: 1fr; }
 }
+
+/* LaunchGuard next-level UI */
+body {
+  background: radial-gradient(circle at 12% 0%, rgba(238,70,102,.11), transparent 26rem), radial-gradient(circle at 95% 0%, rgba(18,23,44,.08), transparent 30rem), #f7f6f4 !important;
+}
+
+.lg-app { max-width: 1240px; padding: 28px 34px 56px; }
+
+.lg-admin-header {
+  display: grid !important;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 4px 22px;
+  margin-bottom: 22px;
+  border-bottom: 1px solid rgba(23,23,33,.10);
+}
+
+.lg-admin-header > div:first-child {
+  display: flex !important;
+  align-items: center !important;
+  gap: 14px !important;
+}
+
+.lg-admin-header img {
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 14px;
+  box-shadow: 0 12px 26px rgba(238,70,102,.22);
+}
+
+.Polaris-Tabs {
+  background: rgba(255,255,255,.82);
+  border: 1px solid rgba(23,23,33,.10);
+  border-radius: 18px;
+  padding: 7px;
+  box-shadow: 0 10px 28px rgba(23,23,33,.07);
+  margin-bottom: 24px;
+}
+
+.Polaris-Tabs__Tab, button, .Polaris-Button { border-radius: 12px !important; font-weight: 700 !important; }
+.Polaris-Card { border-radius: 22px !important; border: 1px solid rgba(23,23,33,.10) !important; box-shadow: 0 12px 30px rgba(23,23,33,.07); }
+.Polaris-TextField__Input, .Polaris-Select__Input, input, textarea, select { border-radius: 12px !important; }
+
+.lg-template-grid, .lg-feature-strip { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+
+.lg-template-card, .lg-feature-strip > div {
+  padding: 18px;
+  border-radius: 20px;
+  background: #fff;
+  border: 1px solid rgba(23,23,33,.10);
+  box-shadow: 0 10px 24px rgba(23,23,33,.06);
+}
+
+.lg-template-eyebrow { margin: 0 0 8px; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: #ee4666; }
+.lg-template-card h3 { margin: 0 0 6px; font-size: 16px; letter-spacing: -.03em; }
+.lg-template-card p, .lg-feature-strip span { color: #6f6f76; line-height: 1.45; }
+
+.lg-preview-card { margin: 12px 0 16px; padding: 16px; border-radius: 20px; background: linear-gradient(135deg, #12172c 0%, #232b4c 100%); color: #fff; }
+.lg-preview-topline { display: flex; justify-content: space-between; font-size: 12px; opacity: .82; margin-bottom: 14px; }
+.lg-preview-box { background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.14); border-radius: 18px; padding: 18px; }
+.lg-preview-kicker { margin: 0 0 6px; font-size: 12px; color: #ff9aad; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; }
+.lg-countdown-row { display: flex; gap: 8px; }
+.lg-countdown-row span { padding: 8px 11px; border-radius: 12px; background: rgba(255,255,255,.12); font-weight: 800; }
+
+@media (max-width: 900px) {
+  .lg-template-grid, .lg-feature-strip { grid-template-columns: 1fr; }
+  .lg-admin-header { grid-template-columns: 1fr; }
+}
