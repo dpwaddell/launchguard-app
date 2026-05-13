@@ -2,7 +2,6 @@ import { Router } from "express";
 import { prisma } from "../lib/prisma.js";
 import { shopify } from "../lib/shopify.js";
 import { logger } from "../lib/logger.js";
-import { registerRequiredWebhooks } from "../services/webhookRegistration.js";
 
 async function fetchMerchantContact(shopDomain: string, accessToken: string) {
   if (!shopDomain || !accessToken) return {};
@@ -97,8 +96,6 @@ authRouter.get("/auth/callback", async (req, res) => {
     update: {}
   });
 
-  const registeredWebhookTopics = await registerRequiredWebhooks(shop);
-
   await prisma.auditLog.create({
     data: {
       shopId: shop.id,
@@ -108,7 +105,7 @@ authRouter.get("/auth/callback", async (req, res) => {
     }
   });
 
-  logger.info({ shop: session.shop, webhooks: registeredWebhookTopics }, "shop installed");
+  logger.info({ shop: session.shop }, "shop installed");
   const host = typeof req.query.host === "string" ? req.query.host : "";
     const hostParam = host ? `&host=${encodeURIComponent(host)}` : "";
     res.redirect(`/app?shop=${encodeURIComponent(session.shop)}${hostParam}`);
