@@ -9,9 +9,3 @@ description = "Validates cart quantities against active LaunchGuard campaign lim
 [extensions.build]
 command = "npm run build"
 path = "dist/index.wasm"
-
-[extensions.input.variables]
-  [[extensions.input.variables.variables]]
-  name = "campaignLimitsMetafieldKey"
-  type = "String!"
-  default_value = "launchguard_limits"
