@@ -725,447 +725,126 @@ select:focus {
   border-color: rgba(8, 205, 218, 0.55) !important;
 }
 
-/* LaunchGuard tighter embedded admin layout */
+/* LaunchGuard final balanced embedded admin layout */
 .lg-app {
-  max-width: 1180px !important;
-  padding-top: 0 !important;
-  padding-bottom: 32px !important;
+  width: 100% !important;
+  max-width: 1420px !important;
+  margin: 0 auto !important;
+  padding: 12px 24px 40px !important;
+}
+
+.Polaris-Page,
+.Polaris-Page__Content,
+.Polaris-Layout {
+  max-width: none !important;
+  background: transparent !important;
 }
 
 .lg-admin-header {
   padding: 8px 0 12px !important;
   margin-bottom: 14px !important;
+  border-bottom: 1px solid rgba(6,26,46,.10) !important;
 }
 
 .lg-tabs,
 .Polaris-Tabs {
-  margin-top: 0 !important;
-  margin-bottom: 14px !important;
+  margin: 0 0 14px !important;
+  border-radius: 16px !important;
 }
 
-.Polaris-Layout__Section {
-  margin-top: 0 !important;
-}
-
-.Polaris-BlockStack {
-  gap: 12px;
-}
-
-/* Reduce vertical rhythm between main cards */
-.lg-app .Polaris-Card {
-  margin-top: 0 !important;
-}
-
-.lg-app .Polaris-Layout__Section > div,
-.lg-app .Polaris-BlockStack > div {
-  margin-top: 0;
-}
-
-/* Compact dashboard hero + stat area */
-[class*="hero"],
-.lg-hero {
-  padding-top: 24px !important;
-  padding-bottom: 24px !important;
-}
-
-.lg-template-grid,
-.lg-feature-strip,
-.lg-checklist {
-  gap: 10px !important;
-}
-
-.lg-template-card,
-.lg-checkitem,
-.lg-feature-strip > div {
-  padding: 14px !important;
-}
-
-/* Shopify admin iframe gives enough whitespace already */
-@media (min-width: 900px) {
-  .lg-app {
-    padding-left: 24px !important;
-    padding-right: 24px !important;
-  }
-}
-
-/* Final LaunchGuard layout + hero logo fix */
-.lg-app {
-  max-width: none !important;
-  width: min(100%, 1440px) !important;
-  margin: 0 auto !important;
-  padding: 0 24px 32px !important;
-}
-
-/* Use more of the iframe instead of sitting too far right */
-.Polaris-Page,
-.Polaris-Page__Content,
-.Polaris-Layout {
-  max-width: none !important;
-}
-
-.lg-admin-header {
-  padding-top: 6px !important;
-  padding-bottom: 10px !important;
-  margin-bottom: 12px !important;
-}
-
-.lg-tabs,
-.Polaris-Tabs {
-  margin-bottom: 12px !important;
-}
-
-/* Fix blank/white hero logo square */
-.lg-hero__logo,
-img.lg-hero__logo {
-  content: url("/assets/launchguard-logo.png");
-  width: 54px !important;
-  height: 54px !important;
-  object-fit: cover !important;
-  border-radius: 14px !important;
-  background: transparent !important;
-  box-shadow: 0 12px 28px rgba(8,205,218,.24) !important;
-}
-
-/* Compact the dashboard */
+/* Final hero: premium but not overwhelming */
 .lg-hero,
 [class*="hero"] {
-  padding: 22px 28px !important;
-  min-height: auto !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 20px !important;
+  min-height: 126px !important;
+  padding: 28px 34px !important;
+  border-radius: 22px !important;
+  overflow: hidden !important;
+  background:
+    radial-gradient(circle at 14% 42%, rgba(8,205,218,.20), transparent 20rem),
+    linear-gradient(135deg, #071c30 0%, #0a2f4a 100%) !important;
+  box-shadow:
+    0 12px 30px rgba(6,26,46,.13),
+    inset 0 1px 0 rgba(255,255,255,.06) !important;
 }
 
-.lg-checkitem {
-  min-height: 92px !important;
-}
-
-.lg-template-card {
-  min-height: 128px !important;
-}
-
-/* Better large-screen balance inside Shopify admin */
-@media (min-width: 1200px) {
-  .lg-app {
-    padding-left: 16px !important;
-    padding-right: 16px !important;
-  }
-}
-
-/* Final hero logo + left alignment correction */
-.lg-app {
-  margin-left: 0 !important;
-  margin-right: 0 !important;
-  width: 100% !important;
-  max-width: none !important;
-  padding-left: 20px !important;
-  padding-right: 20px !important;
+.lg-hero::before,
+.lg-hero::after {
+  display: none !important;
 }
 
 .lg-hero__logo {
-  width: 54px !important;
-  height: 54px !important;
-  flex: 0 0 54px !important;
-  border-radius: 14px !important;
+  width: 64px !important;
+  height: 64px !important;
+  flex: 0 0 64px !important;
+  border-radius: 16px !important;
   background-image: url("/assets/launchguard-logo.png") !important;
-  background-size: cover !important;
+  background-size: contain !important;
   background-position: center !important;
   background-repeat: no-repeat !important;
-  background-color: transparent !important;
-  border: 1px solid rgba(8,205,218,.35) !important;
-  box-shadow: 0 12px 28px rgba(8,205,218,.24) !important;
-  content: none !important;
+  background-color: rgba(255,255,255,.98) !important;
+  border: 1px solid rgba(8,205,218,.32) !important;
+  box-shadow: 0 10px 24px rgba(8,205,218,.18) !important;
 }
 
 .lg-hero img.lg-hero__logo {
   display: none !important;
 }
 
-.lg-hero,
-[class*="hero"] {
-  margin-top: 0 !important;
-}
-
-/* ===== LaunchGuard hero polish ===== */
-
-.lg-hero,
-[class*="hero"] {
-  display: flex !important;
-  align-items: center !important;
-  padding: 28px 34px !important;
-  min-height: 118px !important;
-}
-
-/* Bigger premium logo */
-.lg-hero__logo {
-  width: 72px !important;
-  height: 72px !important;
-  flex: 0 0 72px !important;
-  margin-right: 20px !important;
-  border-radius: 18px !important;
-
-  background-image: url("/assets/launchguard-logo.png") !important;
-  background-size: cover !important;
-  background-position: center !important;
-  background-repeat: no-repeat !important;
-
-  border: 1px solid rgba(8,205,218,.35) !important;
-
-  box-shadow:
-    0 12px 30px rgba(8,205,218,.22),
-    0 0 0 1px rgba(255,255,255,.05) inset !important;
-}
-
-/* Better title hierarchy */
 .lg-hero h1,
 .lg-hero h2,
 .lg-hero .Polaris-Text--headingLg,
 .lg-hero .Polaris-Text--headingMd {
-  font-size: 30px !important;
-  line-height: 1.1 !important;
-  letter-spacing: -0.02em !important;
+  font-size: 22px !important;
+  line-height: 1.15 !important;
+  font-weight: 700 !important;
+  letter-spacing: -.025em !important;
+  color: #fff !important;
   margin-bottom: 6px !important;
 }
 
-/* Cleaner supporting text */
 .lg-hero p,
 .lg-hero .Polaris-Text--bodyMd {
-  opacity: 0.92;
+  font-size: 14px !important;
   line-height: 1.45 !important;
-}
-
-/* Reduce excessive whitespace below hero */
-.lg-hero + * {
-  margin-top: 14px !important;
-}
-
-/* Stats cards tighter + cleaner */
-.lg-app .Polaris-Card {
-  border-radius: 16px !important;
-}
-
-/* Improve visual density */
-.lg-app {
-  gap: 14px !important;
-}
-
-
-/* Correct LaunchGuard hero logo proportions */
-.lg-hero,
-[class*="hero"] {
-  min-height: 96px !important;
-  padding: 22px 28px !important;
-  align-items: center !important;
-}
-
-.lg-hero__logo {
-  width: 56px !important;
-  height: 56px !important;
-  flex: 0 0 56px !important;
-  margin-right: 18px !important;
-  border-radius: 14px !important;
-  background-size: cover !important;
-}
-
-.lg-hero h1,
-.lg-hero h2,
-.lg-hero .Polaris-Text--headingLg,
-.lg-hero .Polaris-Text--headingMd {
-  font-size: 24px !important;
-  line-height: 1.15 !important;
-  margin-bottom: 4px !important;
-}
-
-.lg-hero p,
-.lg-hero .Polaris-Text--bodyMd {
-  font-size: 13px !important;
-  line-height: 1.4 !important;
-}
-
-
-/* Fix hero logo aspect ratio */
-.lg-hero__logo {
-  width: 72px !important;
-  height: 72px !important;
-  flex: 0 0 72px !important;
-  margin-right: 22px !important;
-  border-radius: 16px !important;
-  background-image: url("/assets/launchguard-logo.png") !important;
-  background-size: contain !important;
-  background-position: center !important;
-  background-repeat: no-repeat !important;
-  background-color: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-}
-
-
-/* Premium LaunchGuard hero */
-.lg-hero,
-[class*="hero"] {
-  position: relative !important;
-  overflow: hidden !important;
-  display: flex !important;
-  align-items: center !important;
-  gap: 28px !important;
-  padding: 34px 42px !important;
-  min-height: 160px !important;
-  border-radius: 28px !important;
-  background:
-    radial-gradient(circle at 18% 42%, rgba(8,205,218,.26), transparent 22rem),
-    radial-gradient(circle at 92% 12%, rgba(8,205,218,.12), transparent 26rem),
-    linear-gradient(135deg, #061a2e 0%, #0b2f48 100%) !important;
-  box-shadow:
-    0 20px 48px rgba(6,26,46,.18),
-    inset 0 1px 0 rgba(255,255,255,.08) !important;
-}
-
-.lg-hero::before {
-  content: "";
-  position: absolute;
-  inset: 18px;
-  border-radius: 22px;
-  border: 1px solid rgba(8,205,218,.18);
-  pointer-events: none;
-}
-
-.lg-hero::after {
-  content: "";
-  position: absolute;
-  right: -90px;
-  top: -90px;
-  width: 420px;
-  height: 420px;
-  border-radius: 999px;
-  border: 1px solid rgba(8,205,218,.16);
-  box-shadow:
-    -46px 46px 0 -45px rgba(8,205,218,.18),
-    -92px 92px 0 -91px rgba(8,205,218,.12);
-  pointer-events: none;
-}
-
-.lg-hero__logo {
-  width: 96px !important;
-  height: 96px !important;
-  flex: 0 0 96px !important;
-  border-radius: 24px !important;
-  background-image: url("/assets/launchguard-logo.png") !important;
-  background-size: contain !important;
-  background-position: center !important;
-  background-repeat: no-repeat !important;
-  background-color: rgba(255,255,255,.96) !important;
-  border: 1px solid rgba(8,205,218,.42) !important;
-  box-shadow:
-    0 18px 40px rgba(8,205,218,.28),
-    0 0 0 8px rgba(8,205,218,.08) !important;
-  z-index: 1;
-}
-
-.lg-hero h1,
-.lg-hero h2,
-.lg-hero .Polaris-Text--headingLg,
-.lg-hero .Polaris-Text--headingMd {
-  font-size: 34px !important;
-  line-height: 1.08 !important;
-  letter-spacing: -.035em !important;
-  color: #fff !important;
-}
-
-.lg-hero p,
-.lg-hero .Polaris-Text--bodyMd {
   color: rgba(255,255,255,.88) !important;
-  font-size: 15px !important;
-  line-height: 1.5 !important;
 }
 
-@media (max-width: 760px) {
+/* Dashboard readability */
+.Polaris-Card {
+  border-radius: 16px !important;
+  box-shadow: 0 8px 22px rgba(23,23,33,.055) !important;
+}
+
+.lg-checkitem,
+.lg-template-card,
+.lg-feature-strip > div {
+  padding: 16px !important;
+  min-height: 110px !important;
+}
+
+.lg-checklist,
+.lg-template-grid,
+.lg-feature-strip {
+  gap: 12px !important;
+}
+
+@media (max-width: 900px) {
+  .lg-app {
+    padding: 12px 16px 40px !important;
+  }
+
   .lg-hero,
   [class*="hero"] {
-    padding: 26px !important;
-    gap: 18px !important;
+    padding: 22px !important;
+    min-height: 112px !important;
   }
 
   .lg-hero__logo {
-    width: 72px !important;
-    height: 72px !important;
-    flex-basis: 72px !important;
+    width: 54px !important;
+    height: 54px !important;
+    flex-basis: 54px !important;
   }
 }
-
-/* ===== Refined balanced LaunchGuard hero ===== */
-
-.lg-hero,
-[class*="hero"] {
-  min-height: 112px !important;
-  padding: 24px 30px !important;
-  gap: 18px !important;
-  border-radius: 22px !important;
-
-  background:
-    radial-gradient(circle at 12% 40%, rgba(8,205,218,.18), transparent 18rem),
-    linear-gradient(135deg, #071c30 0%, #0a2b45 100%) !important;
-
-  box-shadow:
-    0 10px 28px rgba(6,26,46,.12),
-    inset 0 1px 0 rgba(255,255,255,.05) !important;
-}
-
-/* Remove excessive visual effects */
-.lg-hero::before {
-  inset: 14px !important;
-  border-radius: 18px !important;
-  opacity: .45 !important;
-}
-
-.lg-hero::after {
-  opacity: .22 !important;
-  transform: scale(.72) !important;
-}
-
-/* Smaller cleaner logo */
-.lg-hero__logo {
-  width: 58px !important;
-  height: 58px !important;
-  flex: 0 0 58px !important;
-  border-radius: 16px !important;
-
-  background-size: contain !important;
-  background-color: rgba(255,255,255,.96) !important;
-
-  box-shadow:
-    0 8px 22px rgba(8,205,218,.16),
-    0 0 0 4px rgba(8,205,218,.05) !important;
-}
-
-/* Better text hierarchy */
-.lg-hero h1,
-.lg-hero h2,
-.lg-hero .Polaris-Text--headingLg,
-.lg-hero .Polaris-Text--headingMd {
-  font-size: 18px !important;
-  font-weight: 650 !important;
-  line-height: 1.15 !important;
-  margin-bottom: 4px !important;
-  letter-spacing: -.015em !important;
-}
-
-.lg-hero p,
-.lg-hero .Polaris-Text--bodyMd {
-  font-size: 13px !important;
-  line-height: 1.45 !important;
-  opacity: .88 !important;
-}
-
-/* Reduce width of text block */
-.lg-hero > div,
-.lg-hero .Polaris-BlockStack {
-  max-width: 620px !important;
-}
-
-/* Better spacing into stats */
-.lg-hero + * {
-  margin-top: 10px !important;
-}
-
-/* Tighten overall dashboard density */
-.lg-app {
-  row-gap: 10px !important;
-}
-
