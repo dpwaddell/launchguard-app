@@ -56,7 +56,12 @@ export async function requireAdminSession(req: Request, res: Response, next: Nex
 
     next();
   } catch (error) {
-    logger.warn({ err: error, shop: req.query.shop }, "invalid admin session token");
+    logger.warn({
+      err: error instanceof Error ? { name: error.name, message: error.message, stack: error.stack } : error,
+      shop: req.query.shop,
+      hasAuthHeader: Boolean(req.header("authorization")),
+      tokenPrefix: req.header("authorization")?.slice(0, 24)
+    }, "invalid admin session token");
     res.status(401).json({ error: "Invalid Shopify session token" });
   }
 }
