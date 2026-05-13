@@ -56,7 +56,7 @@ app.use(
 );
 
 app.use(compression());
-app.use("/webhooks", express.raw({ type: "application/json", limit: "100kb" }), webhooksRouter);
+app.use("/webhooks", express.raw({ type: "*/*", limit: "100kb" }), webhooksRouter);
 app.use(express.json({ limit: "100kb" }));
 app.use(express.urlencoded({ extended: true, limit: "100kb" }));
 app.use(
