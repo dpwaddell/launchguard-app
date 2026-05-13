@@ -724,3 +724,66 @@ select:focus {
   box-shadow: 0 0 0 3px rgba(8, 205, 218, 0.16) !important;
   border-color: rgba(8, 205, 218, 0.55) !important;
 }
+
+/* LaunchGuard tighter embedded admin layout */
+.lg-app {
+  max-width: 1180px !important;
+  padding-top: 0 !important;
+  padding-bottom: 32px !important;
+}
+
+.lg-admin-header {
+  padding: 8px 0 12px !important;
+  margin-bottom: 14px !important;
+}
+
+.lg-tabs,
+.Polaris-Tabs {
+  margin-top: 0 !important;
+  margin-bottom: 14px !important;
+}
+
+.Polaris-Layout__Section {
+  margin-top: 0 !important;
+}
+
+.Polaris-BlockStack {
+  gap: 12px;
+}
+
+/* Reduce vertical rhythm between main cards */
+.lg-app .Polaris-Card {
+  margin-top: 0 !important;
+}
+
+.lg-app .Polaris-Layout__Section > div,
+.lg-app .Polaris-BlockStack > div {
+  margin-top: 0;
+}
+
+/* Compact dashboard hero + stat area */
+[class*="hero"],
+.lg-hero {
+  padding-top: 24px !important;
+  padding-bottom: 24px !important;
+}
+
+.lg-template-grid,
+.lg-feature-strip,
+.lg-checklist {
+  gap: 10px !important;
+}
+
+.lg-template-card,
+.lg-checkitem,
+.lg-feature-strip > div {
+  padding: 14px !important;
+}
+
+/* Shopify admin iframe gives enough whitespace already */
+@media (min-width: 900px) {
+  .lg-app {
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+  }
+}
