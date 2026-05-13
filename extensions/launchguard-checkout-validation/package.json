@@ -4,5 +4,8 @@
   "private": true,
   "scripts": {
     "build": "javy build src/index.js -o dist/index.wasm"
+  },
+  "dependencies": {
+    "@shopify/shopify_function": "~2.0.0"
   }
 }
