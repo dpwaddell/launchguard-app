@@ -59,27 +59,6 @@ webhooksRouter.post("/app/uninstalled", async (req, res) => {
   res.status(200).send("ok");
 });
 
-webhooksRouter.post("/compliance", async (req, res) => {
-  const { topic } = (req as VerifiedWebhookRequest).verifiedWebhook;
-  if (topic === "customers/data_request") {
-    logger.info({ topic }, "customers/data_request compliance webhook received — no PII stored beyond support contact email");
-  } else if (topic === "customers/redact") {
-    const { shopDomain, payload } = (req as VerifiedWebhookRequest).verifiedWebhook;
-    const email = typeof payload.customer?.email === "string" ? payload.customer.email : undefined;
-    if (email) {
-      await prisma.supportRequest.updateMany({
-        where: { shop: { shopDomain }, contactEmail: email },
-        data: { contactEmail: `redacted-${Date.now()}@launchguard.invalid`, message: "Redacted" }
-      });
-    }
-    logger.info({ shopDomain, redacted: Boolean(email) }, "customers/redact compliance webhook received");
-  } else if (topic === "shop/redact") {
-    const { shopDomain } = (req as VerifiedWebhookRequest).verifiedWebhook;
-    await prisma.shop.deleteMany({ where: { shopDomain } });
-    logger.info({ shopDomain }, "shop/redact compliance webhook received");
-  }
-  res.status(200).send("ok");
-});
 
 webhooksRouter.post("/customers/data_request", async (req, res) => {
   const { shopDomain } = (req as VerifiedWebhookRequest).verifiedWebhook;
