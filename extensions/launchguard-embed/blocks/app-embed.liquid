@@ -3,7 +3,7 @@
   window.__launchguardAppUrl = {{ shop.url | json }};
   window.__launchguardShop = {{ shop.permanent_domain | json }};
   window.__launchguardCustomerTags = {{ customer.tags | json | default: '[]' }};
-  window.__launchguardLoggedIn = {{ customer != blank | json }};
+  window.__launchguardLoggedIn = {% if customer %}true{% else %}false{% endif %};
 </script>
 <script src="{{ 'launchguard.js' | asset_url }}" defer></script>
 {% endif %}
