@@ -946,3 +946,36 @@ img.lg-hero__logo {
   gap: 14px !important;
 }
 
+
+/* Correct LaunchGuard hero logo proportions */
+.lg-hero,
+[class*="hero"] {
+  min-height: 96px !important;
+  padding: 22px 28px !important;
+  align-items: center !important;
+}
+
+.lg-hero__logo {
+  width: 56px !important;
+  height: 56px !important;
+  flex: 0 0 56px !important;
+  margin-right: 18px !important;
+  border-radius: 14px !important;
+  background-size: cover !important;
+}
+
+.lg-hero h1,
+.lg-hero h2,
+.lg-hero .Polaris-Text--headingLg,
+.lg-hero .Polaris-Text--headingMd {
+  font-size: 24px !important;
+  line-height: 1.15 !important;
+  margin-bottom: 4px !important;
+}
+
+.lg-hero p,
+.lg-hero .Polaris-Text--bodyMd {
+  font-size: 13px !important;
+  line-height: 1.4 !important;
+}
+
