@@ -996,3 +996,95 @@ img.lg-hero__logo {
   box-shadow: none !important;
 }
 
+
+/* Premium LaunchGuard hero */
+.lg-hero,
+[class*="hero"] {
+  position: relative !important;
+  overflow: hidden !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 28px !important;
+  padding: 34px 42px !important;
+  min-height: 160px !important;
+  border-radius: 28px !important;
+  background:
+    radial-gradient(circle at 18% 42%, rgba(8,205,218,.26), transparent 22rem),
+    radial-gradient(circle at 92% 12%, rgba(8,205,218,.12), transparent 26rem),
+    linear-gradient(135deg, #061a2e 0%, #0b2f48 100%) !important;
+  box-shadow:
+    0 20px 48px rgba(6,26,46,.18),
+    inset 0 1px 0 rgba(255,255,255,.08) !important;
+}
+
+.lg-hero::before {
+  content: "";
+  position: absolute;
+  inset: 18px;
+  border-radius: 22px;
+  border: 1px solid rgba(8,205,218,.18);
+  pointer-events: none;
+}
+
+.lg-hero::after {
+  content: "";
+  position: absolute;
+  right: -90px;
+  top: -90px;
+  width: 420px;
+  height: 420px;
+  border-radius: 999px;
+  border: 1px solid rgba(8,205,218,.16);
+  box-shadow:
+    -46px 46px 0 -45px rgba(8,205,218,.18),
+    -92px 92px 0 -91px rgba(8,205,218,.12);
+  pointer-events: none;
+}
+
+.lg-hero__logo {
+  width: 96px !important;
+  height: 96px !important;
+  flex: 0 0 96px !important;
+  border-radius: 24px !important;
+  background-image: url("/assets/launchguard-logo.png") !important;
+  background-size: contain !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  background-color: rgba(255,255,255,.96) !important;
+  border: 1px solid rgba(8,205,218,.42) !important;
+  box-shadow:
+    0 18px 40px rgba(8,205,218,.28),
+    0 0 0 8px rgba(8,205,218,.08) !important;
+  z-index: 1;
+}
+
+.lg-hero h1,
+.lg-hero h2,
+.lg-hero .Polaris-Text--headingLg,
+.lg-hero .Polaris-Text--headingMd {
+  font-size: 34px !important;
+  line-height: 1.08 !important;
+  letter-spacing: -.035em !important;
+  color: #fff !important;
+}
+
+.lg-hero p,
+.lg-hero .Polaris-Text--bodyMd {
+  color: rgba(255,255,255,.88) !important;
+  font-size: 15px !important;
+  line-height: 1.5 !important;
+}
+
+@media (max-width: 760px) {
+  .lg-hero,
+  [class*="hero"] {
+    padding: 26px !important;
+    gap: 18px !important;
+  }
+
+  .lg-hero__logo {
+    width: 72px !important;
+    height: 72px !important;
+    flex-basis: 72px !important;
+  }
+}
