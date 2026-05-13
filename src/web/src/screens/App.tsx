@@ -47,6 +47,7 @@ type Campaign = {
   lockedMessage: string;
   vipMessage: string;
   brandingEnabled: boolean;
+  hidePriceBeforeLaunch: boolean;
   schedulerError: string | null;
   products: Array<{ id: string; shopifyProductId: string; shopifyProductHandle: string; shopifyProductTitle: string }>;
   accessRules: Array<{ id: string; customerTag: string }>;
@@ -405,6 +406,7 @@ type CampaignFormState = {
   lockedMessage: string;
   vipMessage: string;
   brandingEnabled: boolean;
+  hidePriceBeforeLaunch: boolean;
   isEnabled: boolean;
   products: Array<{ shopifyProductId: string; shopifyProductHandle: string; shopifyProductTitle: string }>;
   vipTagInput: string;
@@ -429,6 +431,7 @@ const defaultForm: CampaignFormState = {
   lockedMessage: "This product is not yet available.",
   vipMessage: "You have early access. Enjoy the launch!",
   brandingEnabled: true,
+  hidePriceBeforeLaunch: false,
   isEnabled: true,
   products: [],
   vipTagInput: "",
@@ -456,6 +459,7 @@ function campaignToForm(c: Campaign): CampaignFormState {
     lockedMessage: c.lockedMessage,
     vipMessage: c.vipMessage,
     brandingEnabled: c.brandingEnabled,
+    hidePriceBeforeLaunch: c.hidePriceBeforeLaunch,
     isEnabled: c.isEnabled,
     products: c.products.map(p => ({ shopifyProductId: p.shopifyProductId, shopifyProductHandle: p.shopifyProductHandle, shopifyProductTitle: p.shopifyProductTitle })),
     vipTagInput: "",
@@ -559,6 +563,7 @@ function CampaignEditorPanel({ data, loading, runAction, editingCampaign, onSave
       lockedMessage: form.lockedMessage,
       vipMessage: form.vipMessage,
       brandingEnabled: entitlements?.brandingEnabled ? true : form.brandingEnabled,
+      hidePriceBeforeLaunch: form.hidePriceBeforeLaunch,
       isEnabled: form.isEnabled,
       products: form.products,
       accessRules: form.accessRules,
@@ -709,6 +714,12 @@ function CampaignEditorPanel({ data, loading, runAction, editingCampaign, onSave
               ) : (
                 <Checkbox label="Show LaunchGuard branding" checked={form.brandingEnabled} onChange={v => update("brandingEnabled", v)} />
               )}
+              <Checkbox
+                label="Hide price before launch"
+                checked={form.hidePriceBeforeLaunch}
+                onChange={v => update("hidePriceBeforeLaunch", v)}
+                helpText="Optional. Hide product price while the launch is locked or counting down."
+              />
             </FormLayout>
           </BlockStack>
         </div>
@@ -1147,7 +1158,7 @@ function StorefrontPreviewCard() {
       <div className="lg-preview-box">
         <p className="lg-preview-kicker">Launching soon</p>
         <h3>Product available soon</h3>
-        <p>This product is not yet available. VIP customers may access early when configured.</p>
+        <p>This product is not yet available. Buy buttons are hidden. VIP customers may access early when configured.</p>
         <div className="lg-countdown-row"><span>02d</span><span>14h</span><span>38m</span></div>
       </div>
     </div>

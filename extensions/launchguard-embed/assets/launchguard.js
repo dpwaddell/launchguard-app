@@ -82,16 +82,55 @@
     return el;
   }
 
-  function hideAddToCartButtons() {
+  // Hides all purchase CTAs: add-to-cart, buy-now, dynamic checkout buttons.
+  // Uses display:none + class for reversibility, then intercepts form submit as fallback.
+  function hidePurchaseCtas() {
     var selectors = [
+      // Add to cart submit buttons (Dawn, Debut, common themes)
       'form[action="/cart/add"] button[type="submit"]',
       '.product-form__submit',
       '.btn--add-to-cart',
-      '[data-add-to-cart]'
+      '[data-add-to-cart]',
+      // Buy-it-now / dynamic checkout buttons
+      '.shopify-payment-button',
+      '.shopify-payment-button__button',
+      '[data-shopify-buy-button]',
+      '.product-form__payment-button',
+      '[data-payment-button]'
     ];
+
     selectors.forEach(function (sel) {
-      document.querySelectorAll(sel).forEach(function (btn) {
-        btn.style.display = 'none';
+      document.querySelectorAll(sel).forEach(function (el) {
+        el.classList.add('lg-cta-hidden');
+        el.style.display = 'none';
+      });
+    });
+
+    // Fallback: intercept form submit to prevent cart add even if a button escaped hiding
+    document.querySelectorAll('form[action="/cart/add"]').forEach(function (form) {
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+      }, true);
+    });
+  }
+
+  // Hides price elements using conservative selectors. Does not permanently remove
+  // elements — uses display:none + class so launched products restore normally on reload.
+  function hidePriceElements() {
+    var selectors = [
+      '.price__regular',
+      '.price__sale',
+      '.price-item',
+      '[data-product-price]',
+      '.product__price',
+      '.product-price'
+    ];
+
+    selectors.forEach(function (sel) {
+      document.querySelectorAll(sel).forEach(function (el) {
+        el.classList.add('lg-price-hidden');
+        el.style.display = 'none';
       });
     });
   }
@@ -103,13 +142,15 @@
     var isVipWindow = vipStart && now >= vipStart && now < launchAt;
     var hasVip = customerHasVipTag(campaign.vipTags);
 
+    // Product is publicly live — do not interfere with purchase flow
     if (campaign.status === 'LIVE') return;
 
     if (isVipWindow && hasVip && loggedIn) {
-      // VIP customer in early access — show VIP message, allow purchase
+      // VIP customer in early access — allow purchase, show VIP notice only
       var productForm = document.querySelector('form[action="/cart/add"]');
       if (productForm) {
         var vipEl = document.createElement('div');
+        vipEl.className = 'lg-vip-notice';
         vipEl.style.cssText = 'background:#fff8e1;border-radius:6px;padding:0.75rem 1rem;margin-bottom:1rem;font-size:0.875rem;color:#5d4037;';
         vipEl.textContent = campaign.vipMessage;
         productForm.insertAdjacentElement('beforebegin', vipEl);
@@ -117,8 +158,13 @@
       return;
     }
 
-    // All other cases: lock the product
-    hideAddToCartButtons();
+    // Locked/countdown state — hide all purchase CTAs
+    hidePurchaseCtas();
+
+    // Optionally hide price elements if the merchant enabled it
+    if (campaign.hidePriceBeforeLaunch) {
+      hidePriceElements();
+    }
 
     var insertTarget = document.querySelector('.product-form, form[action="/cart/add"], .product__info-container');
     if (!insertTarget) {
