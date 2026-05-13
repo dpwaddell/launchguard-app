@@ -848,3 +848,37 @@ img.lg-hero__logo {
     padding-right: 16px !important;
   }
 }
+
+/* Final hero logo + left alignment correction */
+.lg-app {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  width: 100% !important;
+  max-width: none !important;
+  padding-left: 20px !important;
+  padding-right: 20px !important;
+}
+
+.lg-hero__logo {
+  width: 54px !important;
+  height: 54px !important;
+  flex: 0 0 54px !important;
+  border-radius: 14px !important;
+  background-image: url("/assets/launchguard-logo.png") !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  background-color: transparent !important;
+  border: 1px solid rgba(8,205,218,.35) !important;
+  box-shadow: 0 12px 28px rgba(8,205,218,.24) !important;
+  content: none !important;
+}
+
+.lg-hero img.lg-hero__logo {
+  display: none !important;
+}
+
+.lg-hero,
+[class*="hero"] {
+  margin-top: 0 !important;
+}

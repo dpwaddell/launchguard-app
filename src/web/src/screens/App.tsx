@@ -221,7 +221,7 @@ function DashboardPanel({ data, loading, goToTab, runAction, shop }: { data: Boo
     <BlockStack gap="400">
       <div className="lg-hero">
         <div className="lg-hero__content">
-          <img src={launchGuardLogo} alt="" className="lg-hero__logo" />
+          <div className="lg-hero__logo" aria-hidden="true" />
           <BlockStack gap="200">
             <Text as="h2" variant="headingXl">Launch control center</Text>
             <Text as="p">Schedule drops, control early access, and enforce fair limits — all from one place.</Text>
