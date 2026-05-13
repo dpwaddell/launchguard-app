@@ -19,7 +19,7 @@ import {
   TextField,
   Toast
 } from "@shopify/polaris";
-import launchGuardLogo from "../assets/launchguard-logo.svg";
+const launchGuardLogo = "/assets/launchguard-logo.png";
 import { adminFetch } from "../lib/adminFetch";
 
 const tabs = [
