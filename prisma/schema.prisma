@@ -140,6 +140,7 @@ model LaunchCampaign {
   lockedMessage         String         @default("This product is not yet available.")
   vipMessage            String         @default("You have early access. Enjoy the launch!")
   brandingEnabled       Boolean        @default(true)
+  hidePriceBeforeLaunch Boolean        @default(false)
   schedulerLastRunAt    DateTime?
   schedulerError        String?
   createdAt             DateTime       @default(now())

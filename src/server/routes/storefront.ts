@@ -55,6 +55,7 @@ storefrontRouter.get("/apps/launchguard/campaign-config", async (req, res) => {
       lockedMessage: campaign.lockedMessage,
       vipMessage: campaign.vipMessage,
       brandingEnabled: campaign.brandingEnabled,
+      hidePriceBeforeLaunch: campaign.hidePriceBeforeLaunch,
       vipTags: campaign.accessRules.map((r) => r.customerTag),
       serverTime: now.toISOString()
     }

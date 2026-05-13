@@ -36,6 +36,7 @@ const campaignSchema = z.object({
   lockedMessage: z.string().default("This product is not yet available."),
   vipMessage: z.string().default("You have early access. Enjoy the launch!"),
   brandingEnabled: z.boolean().default(true),
+  hidePriceBeforeLaunch: z.boolean().default(false),
   isEnabled: z.boolean().default(true),
   products: z.array(productSchema).default([]),
   accessRules: z.array(accessRuleSchema).default([]),
