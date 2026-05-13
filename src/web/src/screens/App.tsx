@@ -178,18 +178,35 @@ export function App() {
 
   const shopData = data?.shop ?? null;
 
+  // Auto-redirect the top window to OAuth when the shop is not yet installed.
+  // window.top navigation is allowed cross-origin; the try/catch handles the rare
+  // sandboxed-iframe case and falls back to same-window navigation.
+  useEffect(() => {
+    if (bootstrapStatus !== "not_installed" || !shop) return;
+    const authUrl = `/auth?shop=${encodeURIComponent(shop)}`;
+    try {
+      const target = window.top && window.top !== window ? window.top : window;
+      target.location.href = authUrl;
+    } catch {
+      window.location.href = authUrl;
+    }
+  }, [bootstrapStatus, shop]);
+
   if (bootstrapStatus === "not_installed") {
+    const authUrl = shop ? `/auth?shop=${encodeURIComponent(shop)}` : "/auth";
+    function doInstall() {
+      try {
+        const target = window.top && window.top !== window ? window.top : window;
+        target.location.href = authUrl;
+      } catch {
+        window.location.href = authUrl;
+      }
+    }
     return (
       <Page>
-        <Banner
-          title="App not installed for this store"
-          tone="critical"
-          action={{
-            content: "Install LaunchGuard",
-            onAction: () => { window.open(`/auth?shop=${encodeURIComponent(shop)}`, "_top"); }
-          }}
-        >
-          <p>LaunchGuard has not been installed for this store. Click below to complete installation.</p>
+        <Banner title="Completing installation…" tone="info"
+          action={{ content: "Continue installation", onAction: doInstall }}>
+          <p>Redirecting to install LaunchGuard for this store. If nothing happens, click the button below.</p>
         </Banner>
       </Page>
     );
