@@ -11,6 +11,7 @@ import { allowedCorsOrigins, env } from "./config/env.js";
 import { logger } from "./lib/logger.js";
 import { prisma } from "./lib/prisma.js";
 import { adminRouter } from "./routes/admin.js";
+import { legalRouter } from "./routes/legal.js";
 import { authRouter } from "./routes/auth.js";
 import { healthRouter } from "./routes/health.js";
 import { storefrontRouter } from "./routes/storefront.js";
@@ -56,6 +57,7 @@ app.use(
 );
 
 app.use(compression());
+app.use(legalRouter);
 app.use("/webhooks", express.raw({ type: "*/*", limit: "100kb" }), webhooksRouter);
 app.use(express.json({ limit: "100kb" }));
 app.use(express.urlencoded({ extended: true, limit: "100kb" }));
