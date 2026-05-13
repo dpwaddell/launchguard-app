@@ -787,3 +787,64 @@ select:focus {
     padding-right: 24px !important;
   }
 }
+
+/* Final LaunchGuard layout + hero logo fix */
+.lg-app {
+  max-width: none !important;
+  width: min(100%, 1440px) !important;
+  margin: 0 auto !important;
+  padding: 0 24px 32px !important;
+}
+
+/* Use more of the iframe instead of sitting too far right */
+.Polaris-Page,
+.Polaris-Page__Content,
+.Polaris-Layout {
+  max-width: none !important;
+}
+
+.lg-admin-header {
+  padding-top: 6px !important;
+  padding-bottom: 10px !important;
+  margin-bottom: 12px !important;
+}
+
+.lg-tabs,
+.Polaris-Tabs {
+  margin-bottom: 12px !important;
+}
+
+/* Fix blank/white hero logo square */
+.lg-hero__logo,
+img.lg-hero__logo {
+  content: url("/assets/launchguard-logo.png");
+  width: 54px !important;
+  height: 54px !important;
+  object-fit: cover !important;
+  border-radius: 14px !important;
+  background: transparent !important;
+  box-shadow: 0 12px 28px rgba(8,205,218,.24) !important;
+}
+
+/* Compact the dashboard */
+.lg-hero,
+[class*="hero"] {
+  padding: 22px 28px !important;
+  min-height: auto !important;
+}
+
+.lg-checkitem {
+  min-height: 92px !important;
+}
+
+.lg-template-card {
+  min-height: 128px !important;
+}
+
+/* Better large-screen balance inside Shopify admin */
+@media (min-width: 1200px) {
+  .lg-app {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+}
