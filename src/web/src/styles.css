@@ -979,3 +979,20 @@ img.lg-hero__logo {
   line-height: 1.4 !important;
 }
 
+
+/* Fix hero logo aspect ratio */
+.lg-hero__logo {
+  width: 72px !important;
+  height: 72px !important;
+  flex: 0 0 72px !important;
+  margin-right: 22px !important;
+  border-radius: 16px !important;
+  background-image: url("/assets/launchguard-logo.png") !important;
+  background-size: contain !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
