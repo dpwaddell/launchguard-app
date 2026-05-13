@@ -91,15 +91,20 @@ apiAdminRouter.get("/bootstrap", async (req, res) => {
 
 adminRouter.use("/api/admin", apiAdminRouter);
 
+function isEmbeddedRequest(req: any): boolean {
+  // Shopify always includes `host` (base64 shop/admin) when loading the app in the admin iframe.
+  // `embedded=1` is the explicit flag. Either signals an iframe context where server-side OAuth
+  // redirects are forbidden — those pages set X-Frame-Options: DENY and will break the iframe.
+  return Boolean(req.query.host) || req.query.embedded === "1";
+}
+
 async function ensureInstalledAppPage(req: any, res: any) {
   const shop = typeof req.query.shop === "string" ? req.query.shop.toLowerCase() : "";
-  const host = typeof req.query.host === "string" ? req.query.host : "";
 
-  if (shop) {
+  if (shop && !isEmbeddedRequest(req)) {
     const installed = await prisma.shop.findUnique({ where: { shopDomain: shop } });
     if (!installed || installed.uninstalledAt) {
-      const hostParam = host ? `&host=${encodeURIComponent(host)}` : "";
-      res.redirect(`/auth?shop=${encodeURIComponent(shop)}${hostParam}`);
+      res.redirect(`/auth?shop=${encodeURIComponent(shop)}`);
       return;
     }
   }
@@ -116,13 +121,11 @@ adminRouter.get("*", async (req, res, next) => {
   }
 
   const shop = typeof req.query.shop === "string" ? req.query.shop.toLowerCase() : "";
-  const host = typeof req.query.host === "string" ? req.query.host : "";
 
-  if (shop) {
+  if (shop && !isEmbeddedRequest(req)) {
     const installed = await prisma.shop.findUnique({ where: { shopDomain: shop } });
     if (!installed || installed.uninstalledAt) {
-      const hostParam = host ? `&host=${encodeURIComponent(host)}` : "";
-      res.redirect(`/auth?shop=${encodeURIComponent(shop)}${hostParam}`);
+      res.redirect(`/auth?shop=${encodeURIComponent(shop)}`);
       return;
     }
   }

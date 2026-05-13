@@ -134,18 +134,24 @@ export function App() {
   const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState("");
   const [editingCampaign, setEditingCampaign] = useState<Campaign | null>(null);
+  const [bootstrapStatus, setBootstrapStatus] = useState<"loading" | "ok" | "not_installed" | "error">("loading");
   const params = useMemo(() => new URLSearchParams(window.location.search), []);
   const shop = params.get("shop") ?? "";
 
   const reload = useCallback(async () => {
     if (!shop) return;
     const response = await adminFetch(`/api/admin/bootstrap?shop=${encodeURIComponent(shop)}`);
-    if (!response.ok) throw new Error("Bootstrap failed");
-    setData(await response.json());
+    if (!response.ok) {
+      setBootstrapStatus("error");
+      throw new Error("Bootstrap failed");
+    }
+    const json: Bootstrap = await response.json();
+    setData(json);
+    setBootstrapStatus(json.shop ? "ok" : "not_installed");
   }, [shop]);
 
   useEffect(() => {
-    reload().catch(() => setData({ shop: null }));
+    reload().catch(() => setBootstrapStatus("error"));
   }, [reload]);
 
   async function runAction(action: () => Promise<void>, success: string) {
@@ -171,6 +177,33 @@ export function App() {
   }
 
   const shopData = data?.shop ?? null;
+
+  if (bootstrapStatus === "not_installed") {
+    return (
+      <Page>
+        <Banner
+          title="App not installed for this store"
+          tone="critical"
+          action={{
+            content: "Install LaunchGuard",
+            onAction: () => { window.open(`/auth?shop=${encodeURIComponent(shop)}`, "_top"); }
+          }}
+        >
+          <p>LaunchGuard has not been installed for this store. Click below to complete installation.</p>
+        </Banner>
+      </Page>
+    );
+  }
+
+  if (bootstrapStatus === "error") {
+    return (
+      <Page>
+        <Banner title="LaunchGuard could not load" tone="critical">
+          <p>There was a problem loading LaunchGuard. Refresh the Shopify admin and try again.</p>
+        </Banner>
+      </Page>
+    );
+  }
 
   return (
     <Page>
