@@ -4,7 +4,7 @@ import { shopify } from "../lib/shopify.js";
 import { logger } from "../lib/logger.js";
 import { ensureExpiringOfflineAccessToken } from "../services/adminAccessToken.js";
 
-function getBearerToken(req: Request) {
+export function getBearerToken(req: Request) {
   const header = req.header("authorization");
   const match = header?.match(/^Bearer\s+(.+)$/i);
   return match?.[1];

@@ -2,7 +2,8 @@ import { Router } from "express";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { prisma } from "../lib/prisma.js";
-import { requireAdminSession } from "../middleware/adminAuth.js";
+import { requireAdminSession, getBearerToken } from "../middleware/adminAuth.js";
+import { shopify } from "../lib/shopify.js";
 import { campaignsRouter } from "./campaigns.js";
 import { settingsRouter } from "./settings.js";
 import { billingRouter } from "./billing.js";
@@ -87,6 +88,29 @@ apiAdminRouter.get("/bootstrap", async (req, res) => {
       }
     }
   });
+});
+
+// Bootstrap-specific guard: a valid session token for a shop that hasn't completed
+// OAuth yet returns { shop: null } (200) so the frontend can show the install CTA.
+// Missing or invalid tokens fall through to requireAdminSession which returns 401.
+// All other /api/admin/* routes are unaffected.
+adminRouter.get("/api/admin/bootstrap", async (req, res, next) => {
+  const token = getBearerToken(req);
+  if (!token) { next(); return; }
+
+  try {
+    const payload = await shopify.session.decodeSessionToken(token);
+    const shopDomain = new URL(payload.dest).hostname.toLowerCase();
+    const shop = await prisma.shop.findUnique({ where: { shopDomain } });
+    if (!shop || shop.uninstalledAt) {
+      res.json({ shop: null });
+      return;
+    }
+  } catch {
+    // Invalid token — let requireAdminSession produce the 401
+  }
+
+  next();
 });
 
 adminRouter.use("/api/admin", apiAdminRouter);
