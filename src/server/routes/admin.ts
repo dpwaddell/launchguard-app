@@ -91,9 +91,23 @@ apiAdminRouter.get("/bootstrap", async (req, res) => {
 
 adminRouter.use("/api/admin", apiAdminRouter);
 
-adminRouter.get("/app", (_req, res) => {
-  res.sendFile(path.join(webDist, "index.html"));
-});
+async function ensureInstalledAppPage(req: any, res: any) {
+  const shop = typeof req.query.shop === "string" ? req.query.shop.toLowerCase() : "";
+  const host = typeof req.query.host === "string" ? req.query.host : "";
+
+  if (shop) {
+    const installed = await prisma.shop.findUnique({ where: { shopDomain: shop } });
+    if (!installed || installed.uninstalledAt) {
+      const hostParam = host ? `&host=${encodeURIComponent(host)}` : "";
+      res.redirect(`/auth?shop=${encodeURIComponent(shop)}${hostParam}`);
+      return;
+    }
+  }
+
+  res.sendFile("index.html", { root: "dist/web" });
+}
+
+adminRouter.get("/app", ensureInstalledAppPage);
 
 adminRouter.get("*", (req, res, next) => {
   if (req.path.startsWith("/api/") || req.path.startsWith("/webhooks/") || req.path.startsWith("/auth") || req.path.startsWith("/health") || req.path.startsWith("/apps/")) {
