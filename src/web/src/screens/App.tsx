@@ -190,7 +190,7 @@ export function App() {
             <div className="lg-tabs">
               <Tabs tabs={tabs} selected={selected} onSelect={(idx) => { if (idx !== 2) clearEdit(); setSelected(idx); }}>
                 <Box paddingBlockStart="400">
-                  {selected === 0 && <DashboardPanel data={shopData} loading={loading} goToTab={setSelected} runAction={runAction} />}
+                  {selected === 0 && <DashboardPanel data={shopData} loading={loading} goToTab={setSelected} runAction={runAction} shop={shop} />}
                   {selected === 1 && <CampaignsPanel data={shopData} loading={loading} runAction={runAction} onEdit={openEditCampaign} onNew={() => { clearEdit(); setSelected(2); }} />}
                   {selected === 2 && <CampaignEditorPanel data={shopData} loading={loading} runAction={runAction} editingCampaign={editingCampaign} onSaved={() => { clearEdit(); setSelected(1); }} onUpgrade={() => setSelected(3)} />}
                   {selected === 3 && <PlansPanel data={shopData} loading={loading} runAction={runAction} />}
@@ -207,7 +207,7 @@ export function App() {
   );
 }
 
-function DashboardPanel({ data, loading, goToTab, runAction }: { data: Bootstrap["shop"]; loading: boolean; goToTab: (i: number) => void; runAction: (action: () => Promise<void>, success: string) => Promise<void> }) {
+function DashboardPanel({ data, loading, goToTab, runAction, shop }: { data: Bootstrap["shop"]; loading: boolean; goToTab: (i: number) => void; runAction: (action: () => Promise<void>, success: string) => Promise<void>; shop: string }) {
   const metrics = [
     { label: "Total campaigns", value: data?.dashboard.totalCampaigns ?? 0, detail: "All time" },
     { label: "Active launches", value: data?.dashboard.activeCampaigns ?? 0, detail: "Scheduled, VIP or live" },
@@ -265,6 +265,7 @@ function DashboardPanel({ data, loading, goToTab, runAction }: { data: Bootstrap
         hasCampaigns={Boolean(data?.campaigns?.length)}
         onNew={() => goToTab(2)}
         onPlans={() => goToTab(3)}
+        shop={shop}
       />
 
       <Card>
@@ -1053,11 +1054,18 @@ function planFeatures(plan: Plan) {
   return features[plan.key] ?? plan.features.slice(0, 5);
 }
 
-function OnboardingChecklist({ hasCampaigns, onNew, onPlans }: { hasCampaigns: boolean; onNew: () => void; onPlans: () => void }) {
-  const items = [
+function OnboardingChecklist({ hasCampaigns, onNew, onPlans, shop }: { hasCampaigns: boolean; onNew: () => void; onPlans: () => void; shop: string }) {
+  const themeEditorUrl = shop ? `https://${shop}/admin/themes/current/editor?context=apps` : null;
+
+  const items: Array<{ done: boolean; title: string; body: string; action?: { label: string; url: string } }> = [
     { done: hasCampaigns, title: "Create your first launch", body: "Choose a product, set the public launch time, and save the campaign." },
-    { done: false, title: "Enable the theme app embed", body: "Turn on the LaunchGuard app embed in your Shopify theme so storefront messages can appear." },
-    { done: false, title: "Test the storefront experience", body: "Preview the locked, countdown and VIP messages before sharing the launch." },
+    {
+      done: false,
+      title: "Enable the theme app embed",
+      body: "Turn on the LaunchGuard app embed in your Shopify theme so countdown and lock messages appear on your storefront.",
+      ...(themeEditorUrl ? { action: { label: "Open theme editor", url: themeEditorUrl } } : {})
+    },
+    { done: false, title: "Test the storefront experience", body: "Preview the locked, countdown and VIP messages on a product page before your launch goes live." },
     { done: false, title: "Upgrade only when needed", body: "Use Starter for VIP access and Growth for purchase limits or SEO suppression." }
   ];
 
@@ -1079,6 +1087,11 @@ function OnboardingChecklist({ hasCampaigns, onNew, onPlans }: { hasCampaigns: b
               <div>
                 <strong>{item.title}</strong>
                 <span>{item.body}</span>
+                {item.action && (
+                  <span style={{ marginTop: "6px", display: "block" }}>
+                    <Button size="slim" url={item.action.url} target="_top">{item.action.label}</Button>
+                  </span>
+                )}
               </div>
             </div>
           ))}
