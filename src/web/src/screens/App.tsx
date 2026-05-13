@@ -261,6 +261,12 @@ function DashboardPanel({ data, loading, goToTab, runAction }: { data: Bootstrap
         </BlockStack>
       </Card>
 
+      <OnboardingChecklist
+        hasCampaigns={Boolean(data?.campaigns?.length)}
+        onNew={() => goToTab(2)}
+        onPlans={() => goToTab(3)}
+      />
+
       <Card>
         <BlockStack gap="400">
           <Text as="h2" variant="headingMd">Launch templates</Text>
@@ -1046,6 +1052,47 @@ function planFeatures(plan: Plan) {
   };
   return features[plan.key] ?? plan.features.slice(0, 5);
 }
+
+function OnboardingChecklist({ hasCampaigns, onNew, onPlans }: { hasCampaigns: boolean; onNew: () => void; onPlans: () => void }) {
+  const items = [
+    { done: hasCampaigns, title: "Create your first launch", body: "Choose a product, set the public launch time, and save the campaign." },
+    { done: false, title: "Enable the theme app embed", body: "Turn on the LaunchGuard app embed in your Shopify theme so storefront messages can appear." },
+    { done: false, title: "Test the storefront experience", body: "Preview the locked, countdown and VIP messages before sharing the launch." },
+    { done: false, title: "Upgrade only when needed", body: "Use Starter for VIP access and Growth for purchase limits or SEO suppression." }
+  ];
+
+  return (
+    <Card>
+      <BlockStack gap="400">
+        <InlineStack align="space-between" blockAlign="center">
+          <BlockStack gap="100">
+            <Text as="h2" variant="headingMd">Launch setup checklist</Text>
+            <Text as="p" tone="subdued">A quick path from install to a controlled product launch.</Text>
+          </BlockStack>
+          <Button variant="primary" onClick={onNew}>Create launch</Button>
+        </InlineStack>
+
+        <div className="lg-checklist">
+          {items.map((item, index) => (
+            <div className={item.done ? "lg-checkitem lg-checkitem-done" : "lg-checkitem"} key={item.title}>
+              <div className="lg-checkmark">{item.done ? "✓" : index + 1}</div>
+              <div>
+                <strong>{item.title}</strong>
+                <span>{item.body}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <InlineStack gap="200">
+          <Button onClick={onNew}>Create a test launch</Button>
+          <Button onClick={onPlans}>View plan limits</Button>
+        </InlineStack>
+      </BlockStack>
+    </Card>
+  );
+}
+
 
 function LaunchTemplateCards({ onNew }: { onNew: () => void }) {
   const templates = [
