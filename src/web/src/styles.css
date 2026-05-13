@@ -1088,3 +1088,84 @@ img.lg-hero__logo {
     flex-basis: 72px !important;
   }
 }
+
+/* ===== Refined balanced LaunchGuard hero ===== */
+
+.lg-hero,
+[class*="hero"] {
+  min-height: 112px !important;
+  padding: 24px 30px !important;
+  gap: 18px !important;
+  border-radius: 22px !important;
+
+  background:
+    radial-gradient(circle at 12% 40%, rgba(8,205,218,.18), transparent 18rem),
+    linear-gradient(135deg, #071c30 0%, #0a2b45 100%) !important;
+
+  box-shadow:
+    0 10px 28px rgba(6,26,46,.12),
+    inset 0 1px 0 rgba(255,255,255,.05) !important;
+}
+
+/* Remove excessive visual effects */
+.lg-hero::before {
+  inset: 14px !important;
+  border-radius: 18px !important;
+  opacity: .45 !important;
+}
+
+.lg-hero::after {
+  opacity: .22 !important;
+  transform: scale(.72) !important;
+}
+
+/* Smaller cleaner logo */
+.lg-hero__logo {
+  width: 58px !important;
+  height: 58px !important;
+  flex: 0 0 58px !important;
+  border-radius: 16px !important;
+
+  background-size: contain !important;
+  background-color: rgba(255,255,255,.96) !important;
+
+  box-shadow:
+    0 8px 22px rgba(8,205,218,.16),
+    0 0 0 4px rgba(8,205,218,.05) !important;
+}
+
+/* Better text hierarchy */
+.lg-hero h1,
+.lg-hero h2,
+.lg-hero .Polaris-Text--headingLg,
+.lg-hero .Polaris-Text--headingMd {
+  font-size: 18px !important;
+  font-weight: 650 !important;
+  line-height: 1.15 !important;
+  margin-bottom: 4px !important;
+  letter-spacing: -.015em !important;
+}
+
+.lg-hero p,
+.lg-hero .Polaris-Text--bodyMd {
+  font-size: 13px !important;
+  line-height: 1.45 !important;
+  opacity: .88 !important;
+}
+
+/* Reduce width of text block */
+.lg-hero > div,
+.lg-hero .Polaris-BlockStack {
+  max-width: 620px !important;
+}
+
+/* Better spacing into stats */
+.lg-hero + * {
+  margin-top: 10px !important;
+}
+
+/* Tighten overall dashboard density */
+.lg-app {
+  row-gap: 10px !important;
+}
+
