@@ -1,9 +1,21 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "e17e2b362d9d51d265bb78fb7032fb60"
+name = "LaunchGuard"
+application_url = "https://launchguard.sample-guard.com"
+embedded = true
+
 [access_scopes]
-scopes = "read_products,write_products,read_customers,read_orders"
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "read_customers,write_discounts,read_orders,read_products,write_products,read_themes,write_themes"
+optional_scopes = [ ]
+use_legacy_install_flow = false
 
 [auth]
 redirect_urls = [
-  "https://launchguard.sample-guard.com/auth/callback"
+  "https://launchguard.sample-guard.com/auth/callback",
+  "https://launchguard.sample-guard.com/auth/shopify/callback",
+  "https://launchguard.sample-guard.com/api/auth/callback"
 ]
 
 [app_proxy]
@@ -13,3 +25,14 @@ prefix = "apps"
 
 [pos]
 embedded = false
+
+[webhooks]
+api_version = "2026-04"
+
+[[webhooks.subscriptions]]
+topics = ["app/uninstalled"]
+uri = "/webhooks/app/uninstalled"
+
+[[webhooks.subscriptions]]
+compliance_topics = ["customers/data_request", "customers/redact", "shop/redact"]
+uri = "/webhooks"

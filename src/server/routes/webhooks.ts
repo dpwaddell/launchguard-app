@@ -1,7 +1,6 @@
 import crypto from "node:crypto";
 import { Router } from "express";
 import type { NextFunction, Request, Response } from "express";
-import { Prisma } from "@prisma/client";
 import { env } from "../config/env.js";
 import { logger } from "../lib/logger.js";
 import { prisma } from "../lib/prisma.js";
@@ -59,29 +58,36 @@ webhooksRouter.post("/app/uninstalled", async (req, res) => {
   res.status(200).send("ok");
 });
 
+// Single handler for all GDPR compliance webhooks — dispatched by X-Shopify-Topic header
+webhooksRouter.post("/", async (req, res) => {
+  const { shopDomain, topic, payload } = (req as VerifiedWebhookRequest).verifiedWebhook;
 
-webhooksRouter.post("/customers/data_request", async (req, res) => {
-  const { shopDomain } = (req as VerifiedWebhookRequest).verifiedWebhook;
-  logger.info({ shopDomain }, "customers/data_request compliance webhook received");
-  res.status(200).send("ok");
-});
-
-webhooksRouter.post("/customers/redact", async (req, res) => {
-  const { shopDomain, payload } = (req as VerifiedWebhookRequest).verifiedWebhook;
-  const email = typeof payload.customer?.email === "string" ? payload.customer.email : undefined;
-  if (email) {
-    await prisma.supportRequest.updateMany({
-      where: { shop: { shopDomain }, contactEmail: email },
-      data: { contactEmail: `redacted-${Date.now()}@launchguard.invalid`, message: "Redacted" }
-    });
+  if (topic === "customers/data_request") {
+    logger.info({ shopDomain }, "customers/data_request compliance webhook received");
+    res.status(200).send("ok");
+    return;
   }
-  logger.info({ shopDomain, redacted: Boolean(email) }, "customers/redact compliance webhook received");
-  res.status(200).send("ok");
-});
 
-webhooksRouter.post("/shop/redact", async (req, res) => {
-  const { shopDomain } = (req as VerifiedWebhookRequest).verifiedWebhook;
-  await prisma.shop.deleteMany({ where: { shopDomain } });
-  logger.info({ shopDomain }, "shop/redact compliance webhook received");
+  if (topic === "customers/redact") {
+    const email = typeof payload.customer?.email === "string" ? payload.customer.email : undefined;
+    if (email) {
+      await prisma.supportRequest.updateMany({
+        where: { shop: { shopDomain }, contactEmail: email },
+        data: { contactEmail: `redacted-${Date.now()}@launchguard.invalid`, message: "Redacted" }
+      });
+    }
+    logger.info({ shopDomain, redacted: Boolean(email) }, "customers/redact compliance webhook received");
+    res.status(200).send("ok");
+    return;
+  }
+
+  if (topic === "shop/redact") {
+    await prisma.shop.deleteMany({ where: { shopDomain } });
+    logger.info({ shopDomain }, "shop/redact compliance webhook received");
+    res.status(200).send("ok");
+    return;
+  }
+
+  logger.warn({ shopDomain, topic }, "unhandled webhook topic at root handler");
   res.status(200).send("ok");
 });
