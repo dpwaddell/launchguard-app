@@ -505,3 +505,97 @@ body {
   .lg-template-grid, .lg-feature-strip { grid-template-columns: 1fr; }
   .lg-admin-header { grid-template-columns: 1fr; }
 }
+
+/* LaunchGuard production polish */
+body {
+  background:
+    radial-gradient(circle at 20% -10%, rgba(238,70,102,.10), transparent 24rem),
+    #f6f5f3 !important;
+}
+
+/* Pull app up inside Shopify admin iframe */
+.lg-app {
+  max-width: 1320px !important;
+  padding-top: 12px !important;
+  padding-left: 28px !important;
+  padding-right: 28px !important;
+}
+
+/* Compact, premium header */
+.lg-admin-header {
+  padding: 10px 0 16px !important;
+  margin-bottom: 18px !important;
+  border-bottom: 1px solid rgba(23,23,33,.10);
+}
+
+.lg-admin-header > div:first-child {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+}
+
+.lg-admin-header img {
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 13px !important;
+  box-shadow: 0 10px 22px rgba(238,70,102,.18) !important;
+}
+
+.lg-admin-header h1,
+.lg-admin-header h2 {
+  margin: 0 !important;
+  line-height: 1.15 !important;
+  letter-spacing: -.035em !important;
+}
+
+.lg-admin-header p {
+  margin-top: 2px !important;
+  line-height: 1.3 !important;
+}
+
+/* Reduce big gap before tabs */
+.Polaris-Tabs {
+  margin-top: 0 !important;
+  margin-bottom: 22px !important;
+}
+
+/* Cleaner cards */
+.Polaris-Card {
+  border-radius: 18px !important;
+  box-shadow: 0 8px 22px rgba(23,23,33,.055) !important;
+}
+
+.Polaris-Card:hover {
+  transform: none !important;
+  box-shadow: 0 10px 28px rgba(23,23,33,.075) !important;
+}
+
+/* More polished plan cards / empty states */
+.Polaris-EmptyState {
+  min-height: 220px;
+}
+
+.Polaris-Button,
+button {
+  min-height: 34px;
+}
+
+/* Less cramped feature tiles */
+.lg-template-card,
+.lg-feature-strip > div {
+  min-height: 118px;
+}
+
+/* Make embedded app feel more native */
+.Polaris-Page,
+.Polaris-Frame,
+.Polaris-Frame__Content {
+  background: transparent !important;
+}
+
+/* Mobile */
+@media (max-width: 900px) {
+  .lg-app {
+    padding: 12px 16px 40px !important;
+  }
+}
