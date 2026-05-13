@@ -882,3 +882,67 @@ img.lg-hero__logo {
 [class*="hero"] {
   margin-top: 0 !important;
 }
+
+/* ===== LaunchGuard hero polish ===== */
+
+.lg-hero,
+[class*="hero"] {
+  display: flex !important;
+  align-items: center !important;
+  padding: 28px 34px !important;
+  min-height: 118px !important;
+}
+
+/* Bigger premium logo */
+.lg-hero__logo {
+  width: 72px !important;
+  height: 72px !important;
+  flex: 0 0 72px !important;
+  margin-right: 20px !important;
+  border-radius: 18px !important;
+
+  background-image: url("/assets/launchguard-logo.png") !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+
+  border: 1px solid rgba(8,205,218,.35) !important;
+
+  box-shadow:
+    0 12px 30px rgba(8,205,218,.22),
+    0 0 0 1px rgba(255,255,255,.05) inset !important;
+}
+
+/* Better title hierarchy */
+.lg-hero h1,
+.lg-hero h2,
+.lg-hero .Polaris-Text--headingLg,
+.lg-hero .Polaris-Text--headingMd {
+  font-size: 30px !important;
+  line-height: 1.1 !important;
+  letter-spacing: -0.02em !important;
+  margin-bottom: 6px !important;
+}
+
+/* Cleaner supporting text */
+.lg-hero p,
+.lg-hero .Polaris-Text--bodyMd {
+  opacity: 0.92;
+  line-height: 1.45 !important;
+}
+
+/* Reduce excessive whitespace below hero */
+.lg-hero + * {
+  margin-top: 14px !important;
+}
+
+/* Stats cards tighter + cleaner */
+.lg-app .Polaris-Card {
+  border-radius: 16px !important;
+}
+
+/* Improve visual density */
+.lg-app {
+  gap: 14px !important;
+}
+
