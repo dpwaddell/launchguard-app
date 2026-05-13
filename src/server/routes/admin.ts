@@ -109,10 +109,23 @@ async function ensureInstalledAppPage(req: any, res: any) {
 
 adminRouter.get("/app", ensureInstalledAppPage);
 
-adminRouter.get("*", (req, res, next) => {
-  if (req.path.startsWith("/api/") || req.path.startsWith("/webhooks/") || req.path.startsWith("/auth") || req.path.startsWith("/health") || req.path.startsWith("/apps/")) {
+adminRouter.get("*", async (req, res, next) => {
+  if (req.path.startsWith("/api/") || req.path.startsWith("/auth") || req.path.startsWith("/oauth") || req.path.startsWith("/webhooks")) {
     next();
     return;
   }
-  res.sendFile(path.join(webDist, "index.html"));
+
+  const shop = typeof req.query.shop === "string" ? req.query.shop.toLowerCase() : "";
+  const host = typeof req.query.host === "string" ? req.query.host : "";
+
+  if (shop) {
+    const installed = await prisma.shop.findUnique({ where: { shopDomain: shop } });
+    if (!installed || installed.uninstalledAt) {
+      const hostParam = host ? `&host=${encodeURIComponent(host)}` : "";
+      res.redirect(`/auth?shop=${encodeURIComponent(shop)}${hostParam}`);
+      return;
+    }
+  }
+
+  res.sendFile("index.html", { root: "dist/web" });
 });
