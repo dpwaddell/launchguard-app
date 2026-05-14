@@ -21,12 +21,15 @@ const OFFLINE_TOKEN_TYPE = "urn:shopify:params:oauth:token-type:offline-access-t
 export async function ensureExpiringOfflineAccessToken(shop: Shop, sessionToken?: string) {
   if (hasUsableExpiringOfflineToken(shop)) return shop;
 
-  if (shop.offlineRefreshToken && refreshTokenUsable(shop)) {
-    return refreshExpiringOfflineToken(shop);
-  }
-
+  // Shopify's expiring offline token flow requires re-exchange via session token;
+  // the refresh_token grant is not supported. Prefer session-token exchange when
+  // available; fall back to refresh_token only for background contexts (no session).
   if (sessionToken) {
     return exchangeSessionTokenForExpiringOfflineToken(shop, sessionToken);
+  }
+
+  if (shop.offlineRefreshToken && refreshTokenUsable(shop)) {
+    return refreshExpiringOfflineToken(shop);
   }
 
   return shop;
