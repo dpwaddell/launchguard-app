@@ -107,9 +107,11 @@ async function getActiveSubscriptions(shop: Shop) {
       activeSubscriptions: AppSubscription[];
     };
   }>(shop, ACTIVE_SUBSCRIPTIONS, {});
+  const appHandle = response.currentAppInstallation.app?.handle || undefined;
+  logger.info({ shop: shop.shopDomain, appHandle }, "fetched active subscriptions");
   return {
     activeSubscriptions: response.currentAppInstallation.activeSubscriptions,
-    appHandle: response.currentAppInstallation.app?.handle || undefined
+    appHandle
   };
 }
 
