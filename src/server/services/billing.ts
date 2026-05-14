@@ -18,6 +18,9 @@ type AppSubscription = {
 const ACTIVE_SUBSCRIPTIONS = `#graphql
   query LaunchGuardActiveSubscriptions {
     currentAppInstallation {
+      app {
+        handle
+      }
       activeSubscriptions {
         id
         name
@@ -31,7 +34,7 @@ const ACTIVE_SUBSCRIPTIONS = `#graphql
 
 export async function verifyBillingForShop(shop: Shop, sessionToken?: string) {
   const currentShop = await ensureExpiringOfflineAccessToken(shop, sessionToken);
-  const activeSubscriptions = await getActiveSubscriptions(currentShop);
+  const { activeSubscriptions, appHandle } = await getActiveSubscriptions(currentShop);
   const matching = findManagedPricingSubscription(activeSubscriptions);
   const now = new Date();
 
@@ -50,7 +53,7 @@ export async function verifyBillingForShop(shop: Shop, sessionToken?: string) {
         billingLastVerifiedAt: now
       }
     });
-    return { status: "active" as const, planName, subscription: matching, shop: updatedShop };
+    return { status: "active" as const, planName, subscription: matching, shop: updatedShop, appHandle };
   }
 
   const updatedShop = await prisma.shop.update({
@@ -67,15 +70,16 @@ export async function verifyBillingForShop(shop: Shop, sessionToken?: string) {
     }
   });
 
-  return { status: "missing" as const, planName: "FREE" as const, subscription: null, shop: updatedShop };
+  return { status: "missing" as const, planName: "FREE" as const, subscription: null, shop: updatedShop, appHandle };
 }
 
-export function billingManageUrl(shopDomain: string) {
+export function billingManageUrl(shopDomain: string, appHandle?: string) {
+  const handle = appHandle || env.SHOPIFY_APP_HANDLE;
   const store = shopDomain.replace(/\.myshopify\.com$/i, "");
-  return `https://admin.shopify.com/store/${encodeURIComponent(store)}/charges/${encodeURIComponent(env.SHOPIFY_APP_HANDLE)}/pricing_plans`;
+  return `https://admin.shopify.com/store/${encodeURIComponent(store)}/charges/${encodeURIComponent(handle)}/pricing_plans`;
 }
 
-export function billingDiagnostics(shop: Shop, refresh?: { failed?: boolean; message?: string }) {
+export function billingDiagnostics(shop: Shop, refresh?: { failed?: boolean; message?: string }, appHandle?: string) {
   const status = refresh?.failed ? "degraded" : normalizeBillingStatus(shop);
   return {
     currentPlan: getPlanDefinition(shop.planName).name,
@@ -84,7 +88,7 @@ export function billingDiagnostics(shop: Shop, refresh?: { failed?: boolean; mes
     subscriptionId: shop.billingSubscriptionId,
     currentPeriodEnd: shop.billingCurrentPeriodEnd,
     lastVerifiedAt: shop.billingLastVerifiedAt,
-    manageUrl: billingManageUrl(shop.shopDomain),
+    manageUrl: billingManageUrl(shop.shopDomain, appHandle),
     test: shop.billingTest,
     refreshFailed: Boolean(refresh?.failed),
     refreshError: refresh?.message ?? null
@@ -97,12 +101,16 @@ function normalizeBillingStatus(shop: Shop) {
 }
 
 async function getActiveSubscriptions(shop: Shop) {
-  const response = await shopifyGraphql<{ currentAppInstallation: { activeSubscriptions: AppSubscription[] } }>(
-    shop,
-    ACTIVE_SUBSCRIPTIONS,
-    {}
-  );
-  return response.currentAppInstallation.activeSubscriptions;
+  const response = await shopifyGraphql<{
+    currentAppInstallation: {
+      app: { handle: string };
+      activeSubscriptions: AppSubscription[];
+    };
+  }>(shop, ACTIVE_SUBSCRIPTIONS, {});
+  return {
+    activeSubscriptions: response.currentAppInstallation.activeSubscriptions,
+    appHandle: response.currentAppInstallation.app?.handle || undefined
+  };
 }
 
 function findManagedPricingSubscription(subscriptions: AppSubscription[]) {

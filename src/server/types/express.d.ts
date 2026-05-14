@@ -10,6 +10,7 @@ declare global {
         payload: JwtPayload;
         sessionToken: string;
         shop: Shop;
+        appHandle?: string;
       };
     }
   }

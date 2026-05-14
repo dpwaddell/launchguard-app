@@ -33,6 +33,7 @@ apiAdminRouter.get("/bootstrap", async (req, res) => {
   try {
     const verification = await verifyBillingForShop(req.adminAuth!.shop, req.adminAuth!.sessionToken);
     req.adminAuth!.shop = verification.shop;
+    req.adminAuth!.appHandle = verification.appHandle;
   } catch (error) {
     billingRefresh = { failed: true, message: "Billing refresh failed. Plan state may be stale." };
     logger.warn({ err: error, shop: shopDomain }, "billing verification failed during admin bootstrap");
@@ -60,7 +61,7 @@ apiAdminRouter.get("/bootstrap", async (req, res) => {
   const nextScheduled = shop.campaigns.find((c) => c.status === "SCHEDULED" && c.isEnabled && c.publicLaunchAt > now);
   const liveCampaigns = shop.campaigns.filter((c) => c.status === "LIVE" && c.isEnabled);
 
-  const billing = billingDiagnostics(req.adminAuth!.shop, billingRefresh);
+  const billing = billingDiagnostics(req.adminAuth!.shop, billingRefresh, req.adminAuth!.appHandle);
 
   res.json({
     shop: {
