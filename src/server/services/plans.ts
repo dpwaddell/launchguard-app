@@ -147,7 +147,10 @@ export function serializePlanDefinitions(currentPlanName: string | null | undefi
 }
 
 export function billingLimitError(message: string, planName: string | null | undefined, requiredPlan: PlanKey) {
+  // `error` is included explicitly because Error.message is non-enumerable and
+  // won't appear in JSON.stringify — without it the frontend falls back to a generic toast.
   return Object.assign(new Error(message), {
+    error: message,
     statusCode: 402,
     code: "PLAN_LIMIT_REACHED",
     plan: normalizePlanName(planName),

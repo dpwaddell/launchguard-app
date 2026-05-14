@@ -83,6 +83,11 @@ authRouter.get("/auth/callback", async (req, res) => {
       accessToken: session.accessToken ?? "",
       scope: session.scope ?? "",
       uninstalledAt: null,
+      // Clear stale expiring-token state from the previous install so
+      // hasUsableExpiringOfflineToken doesn't treat the new shpat_ token as valid.
+      offlineAccessTokenExpiresAt: null,
+      offlineRefreshToken: null,
+      offlineRefreshTokenExpiresAt: null,
       ...merchant,
       ...((merchant as any).merchantEmail || (merchant as any).merchantContactEmail || (merchant as any).shopOwnerName
         ? { merchantDetailsCapturedAt: new Date() }
